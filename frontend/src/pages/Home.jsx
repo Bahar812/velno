@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import {
     BarChart3,
     CheckCircle2,
@@ -13,7 +13,7 @@ import {
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import HowWeWork from '../components/HowWeWork';
-import { loadLandingContent } from '../utils/landingStorage';
+import { useLandingContent } from '../utils/useLandingContent';
 
 const iconMap = {
     PlugZap,
@@ -31,7 +31,7 @@ const buildWhatsappLink = (value) => {
 };
 
 function Home() {
-    const content = useMemo(() => loadLandingContent(), []);
+    const content = useLandingContent();
     const {
         hero,
         about,

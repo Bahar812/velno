@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useUi } from '../context/UiContext';
-import { loadLandingContent } from '../utils/landingStorage';
+import { useLandingContent } from '../utils/useLandingContent';
 
 function Nav() {
     const { language, toggleLanguage } = useUi();
     const [scrolled, setScrolled] = useState(false);
-    const content = useMemo(() => loadLandingContent(), []);
+    const content = useLandingContent();
     const brand = content?.brand ?? {};
     const navLinks = useMemo(
         () => [

@@ -4,8 +4,10 @@ import { defaultLandingContent } from '../data/landingContent';
 import {
     clearLandingContent,
     loadLandingContent,
+    mergeLandingContent,
     saveLandingContent,
 } from '../utils/landingStorage';
+import { fetchLandingContent, saveLandingContentRemote } from '../utils/landingApi';
 import { clearDashboardAuthed } from '../utils/authStorage';
 
 const iconOptions = [
@@ -214,21 +216,39 @@ function Dashboard() {
     ];
 
     useEffect(() => {
+        let isMounted = true;
+        fetchLandingContent()
+            .then((data) => {
+                const merged = mergeLandingContent(data);
+                if (isMounted) {
+                    setFormData(merged);
+                }
+                saveLandingContent(merged);
+            })
+            .catch(() => null);
+        return () => {
+            isMounted = false;
+        };
+    }, []);
+
+    useEffect(() => {
         setStatus('Menyimpan...');
         const timer = setTimeout(() => {
-            const result = saveLandingContent(formData);
-            if (result?.ok) {
-                setStatus('Tersimpan otomatis');
-                return;
-            }
-            setStatus('Gagal menyimpan (storage penuh)');
-            setToast({
-                type: 'info',
-                message:
-                    'Gagal menyimpan. Storage penuh atau gambar terlalu besar. Coba pakai URL gambar.',
-            });
-            window.clearTimeout(toastTimerRef.current);
-            toastTimerRef.current = window.setTimeout(() => setToast(null), 3000);
+            saveLandingContent(formData);
+            saveLandingContentRemote(formData)
+                .then(() => {
+                    setStatus('Tersimpan otomatis');
+                })
+                .catch(() => {
+                    setStatus('Gagal menyimpan ke database');
+                    setToast({
+                        type: 'info',
+                        message:
+                            'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                    });
+                    window.clearTimeout(toastTimerRef.current);
+                    toastTimerRef.current = window.setTimeout(() => setToast(null), 3000);
+                });
         }, 500);
         return () => clearTimeout(timer);
     }, [formData]);
@@ -272,39 +292,47 @@ function Dashboard() {
     };
 
     const handleSaveNow = () => {
-        const result = saveLandingContent(formData);
-        if (result?.ok) {
-            setStatus('Tersimpan');
-            setToast({ type: 'success', message: 'Tersimpan! Perubahan berhasil disimpan.' });
-        } else {
-            setStatus('Gagal menyimpan (storage penuh)');
-            setToast({
-                type: 'info',
-                message:
-                    'Gagal menyimpan. Storage penuh atau gambar terlalu besar. Coba pakai URL gambar.',
+        saveLandingContent(formData);
+        saveLandingContentRemote(formData)
+            .then(() => {
+                setStatus('Tersimpan');
+                setToast({ type: 'success', message: 'Tersimpan! Perubahan berhasil disimpan.' });
+            })
+            .catch(() => {
+                setStatus('Gagal menyimpan ke database');
+                setToast({
+                    type: 'info',
+                    message:
+                        'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                });
+            })
+            .finally(() => {
+                window.clearTimeout(toastTimerRef.current);
+                toastTimerRef.current = window.setTimeout(() => setToast(null), 2400);
             });
-        }
-        window.clearTimeout(toastTimerRef.current);
-        toastTimerRef.current = window.setTimeout(() => setToast(null), 2400);
     };
 
     const handleReset = () => {
         setFormData(defaultLandingContent);
         clearLandingContent();
-        const result = saveLandingContent(defaultLandingContent);
-        if (result?.ok) {
-            setStatus('Dikembalikan ke default');
-            setToast({ type: 'info', message: 'Konten dikembalikan ke default.' });
-        } else {
-            setStatus('Gagal menyimpan default');
-            setToast({
-                type: 'info',
-                message:
-                    'Gagal menyimpan default. Storage penuh. Coba refresh atau hapus data besar.',
+        saveLandingContent(defaultLandingContent);
+        saveLandingContentRemote(defaultLandingContent)
+            .then(() => {
+                setStatus('Dikembalikan ke default');
+                setToast({ type: 'info', message: 'Konten dikembalikan ke default.' });
+            })
+            .catch(() => {
+                setStatus('Gagal menyimpan ke database');
+                setToast({
+                    type: 'info',
+                    message:
+                        'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                });
+            })
+            .finally(() => {
+                window.clearTimeout(toastTimerRef.current);
+                toastTimerRef.current = window.setTimeout(() => setToast(null), 2400);
             });
-        }
-        window.clearTimeout(toastTimerRef.current);
-        toastTimerRef.current = window.setTimeout(() => setToast(null), 2400);
     };
 
     return (

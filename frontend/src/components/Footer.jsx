@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { loadLandingContent } from '../utils/landingStorage';
+import React from 'react';
+import { useLandingContent } from '../utils/useLandingContent';
 
 const navLinks = [
     { label: 'Home', href: '#home' },
@@ -11,7 +11,7 @@ const navLinks = [
 ];
 
 function Footer() {
-    const content = useMemo(() => loadLandingContent(), []);
+    const content = useLandingContent();
     const footer = content?.footer ?? {};
     const brand = content?.brand ?? {};
     const logoText = brand.logoText ?? 'Velno Softwarehouse';

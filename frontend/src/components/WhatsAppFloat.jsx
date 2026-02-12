@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { loadLandingContent } from '../utils/landingStorage';
+import React from 'react';
+import { useLandingContent } from '../utils/useLandingContent';
 
 const normalizeWhatsappNumber = (value) => `${value ?? ''}`.replace(/\D/g, '');
 const buildWhatsappLink = (value) => {
@@ -8,7 +8,7 @@ const buildWhatsappLink = (value) => {
 };
 
 function WhatsAppFloat() {
-    const content = useMemo(() => loadLandingContent(), []);
+    const content = useLandingContent();
     const whatsapp = content?.whatsapp ?? {};
     const label = whatsapp.floatLabel ?? 'Yuk konsultasi bisnismu';
     const link = buildWhatsappLink(whatsapp.phone);

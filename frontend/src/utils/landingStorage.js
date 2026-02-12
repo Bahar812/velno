@@ -27,6 +27,8 @@ const mergeDeep = (base, override) => {
     return result;
 };
 
+export const mergeLandingContent = (override) => mergeDeep(defaultLandingContent, override);
+
 export const loadLandingContent = () => {
     if (typeof window === 'undefined') {
         return defaultLandingContent;
@@ -37,7 +39,7 @@ export const loadLandingContent = () => {
     }
     try {
         const parsed = JSON.parse(raw);
-        return mergeDeep(defaultLandingContent, parsed);
+        return mergeLandingContent(parsed);
     } catch (error) {
         return defaultLandingContent;
     }
