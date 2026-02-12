@@ -1,5 +1,9 @@
 providers = ["node"]
 
+[variables]
+NODE_VERSION = "20"
+NIXPACKS_NODE_VERSION = "20"
+
 [phases.install]
 cmds = ["cd frontend && npm install --include=dev"]
 
@@ -7,4 +11,4 @@ cmds = ["cd frontend && npm install --include=dev"]
 cmds = ["cd frontend && npm run build"]
 
 [start]
-cmd = "cd frontend && npm run preview -- --host 0.0.0.0 --port $PORT"
+cmd = "cd frontend && npm run preview -- --host 0.0.0.0 --port ${PORT:-3000}"
