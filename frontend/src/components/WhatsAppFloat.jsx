@@ -1,5 +1,6 @@
 import React from 'react';
-import { useLandingContent } from '../utils/useLandingContent';
+import { useUi } from '../context/UiContext';
+import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
 const normalizeWhatsappNumber = (value) => `${value ?? ''}`.replace(/\D/g, '');
 const buildWhatsappLink = (value) => {
@@ -8,18 +9,20 @@ const buildWhatsappLink = (value) => {
 };
 
 function WhatsAppFloat() {
-    const content = useLandingContent();
+    const { language } = useUi();
+    const content = useLocalizedLandingContent();
     const whatsapp = content?.whatsapp ?? {};
     const label = whatsapp.floatLabel ?? 'Yuk konsultasi bisnismu';
     const link = buildWhatsappLink(whatsapp.phone);
     const isDisabled = !link;
+    const ariaSuffix = language === 'id' ? 'lewat WhatsApp' : 'via WhatsApp';
     return (
         <a
             className="wa-float"
             href={link || 'https://wa.me/'}
             target="_blank"
             rel="noreferrer"
-            aria-label={`${label} lewat WhatsApp`}
+            aria-label={`${label} ${ariaSuffix}`}
             aria-disabled={isDisabled ? 'true' : undefined}
             onClick={(event) => {
                 if (isDisabled) {

@@ -47,7 +47,7 @@ const getOutputType = () => (supportsWebp() ? 'image/webp' : 'image/jpeg');
 const compressImageFile = (file) =>
     new Promise((resolve, reject) => {
         if (!file.type.startsWith('image/')) {
-            reject(new Error('Not an image'));
+            reject(new Error('Bukan file gambar'));
             return;
         }
         const img = new Image();
@@ -66,7 +66,7 @@ const compressImageFile = (file) =>
             const ctx = canvas.getContext('2d');
             if (!ctx) {
                 URL.revokeObjectURL(objectUrl);
-                reject(new Error('Canvas not supported'));
+                reject(new Error('Canvas tidak didukung'));
                 return;
             }
             const outputType = getOutputType();
@@ -81,7 +81,7 @@ const compressImageFile = (file) =>
         };
         img.onerror = () => {
             URL.revokeObjectURL(objectUrl);
-            reject(new Error('Image load failed'));
+            reject(new Error('Gagal memuat gambar'));
         };
         img.src = objectUrl;
     });
@@ -149,7 +149,7 @@ const ImageField = ({ label, value, onChange }) => {
         <div className="dashboard-field dashboard-image-field">
             <label>{label}</label>
             <div className="dashboard-image-preview">
-                {value ? <img src={value} alt="Preview" /> : <span>Belum ada gambar</span>}
+                {value ? <img src={value} alt="Pratinjau" /> : <span>Belum ada gambar</span>}
             </div>
             <div className="dashboard-image-controls">
                 <div className="dashboard-file-field">
@@ -200,18 +200,18 @@ function Dashboard() {
     const navigate = useNavigate();
 
     const sections = [
-        { id: 'brand', label: 'Branding' },
+        { id: 'brand', label: 'Merek' },
         { id: 'hero', label: 'Hero' },
-        { id: 'about', label: 'About' },
+        { id: 'about', label: 'Tentang' },
         { id: 'why', label: 'Kenapa Website' },
-        { id: 'vs', label: 'VS Website' },
+        { id: 'vs', label: 'Perbandingan Website' },
         { id: 'whatsapp', label: 'WhatsApp' },
         { id: 'services', label: 'Layanan' },
         { id: 'solutions', label: 'Kenapa Harus Kami' },
         { id: 'work', label: 'Cara Kami Bekerja' },
         { id: 'portfolio', label: 'Portofolio' },
         { id: 'pricing', label: 'Harga' },
-        { id: 'contact', label: 'Contact CTA' },
+        { id: 'contact', label: 'CTA Kontak' },
         { id: 'footer', label: 'Footer' },
     ];
 
@@ -340,7 +340,7 @@ function Dashboard() {
             <div className="dashboard-layout">
                 <aside className="dashboard-sidebar">
                     <div className="dashboard-brand">
-                        <p className="dashboard-kicker">Velno Landing Page</p>
+                        <p className="dashboard-kicker">Halaman Landing Velno</p>
                         <h1 className="dashboard-title">Dashboard Konten</h1>
                         <p className="dashboard-note">
                             Semua perubahan tersimpan di browser. Gunakan gambar yang tidak terlalu besar.
@@ -360,10 +360,10 @@ function Dashboard() {
                                 navigate('/login');
                             }}
                         >
-                            Logout
+                            Keluar
                         </button>
                         <button className="dashboard-btn dashboard-btn--danger" onClick={handleReset}>
-                            Reset Default
+                            Reset Bawaan
                         </button>
                     </div>
                     <nav className="dashboard-nav">
@@ -395,25 +395,25 @@ function Dashboard() {
 
                     {activeSection === 'brand' ? (
                 <section id="dashboard-brand" className="dashboard-card">
-                    <h2 className="dashboard-section-title">Branding</h2>
+                    <h2 className="dashboard-section-title">Merek</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Logo Text"
+                            label="Teks Logo"
                             value={formData.brand.logoText}
                             onChange={(value) => updateByPath(['brand', 'logoText'], value)}
                         />
                         <Field
-                            label="Logo Initials"
+                            label="Inisial Logo"
                             value={formData.brand.logoInitials}
                             onChange={(value) => updateByPath(['brand', 'logoInitials'], value)}
                         />
                         <Field
-                            label="CTA Label (ID)"
+                            label="Label CTA (ID)"
                             value={formData.brand.ctaLabelId}
                             onChange={(value) => updateByPath(['brand', 'ctaLabelId'], value)}
                         />
                         <Field
-                            label="CTA Label (EN)"
+                            label="Label CTA (Inggris)"
                             value={formData.brand.ctaLabelEn}
                             onChange={(value) => updateByPath(['brand', 'ctaLabelEn'], value)}
                         />
@@ -460,12 +460,12 @@ function Dashboard() {
                             onChange={(value) => updateByPath(['hero', 'focus', 'value'], value)}
                         />
                         <Field
-                            label="Label Launch"
+                            label="Label Peluncuran"
                             value={formData.hero.launch.label}
                             onChange={(value) => updateByPath(['hero', 'launch', 'label'], value)}
                         />
                         <Field
-                            label="Isi Launch"
+                            label="Isi Peluncuran"
                             value={formData.hero.launch.value}
                             onChange={(value) => updateByPath(['hero', 'launch', 'value'], value)}
                         />
@@ -478,7 +478,7 @@ function Dashboard() {
 
                     <div className="dashboard-list">
                         <div className="dashboard-list-header">
-                            <h3>Floating Cards</h3>
+                            <h3>Kartu Mengambang</h3>
                             <button
                                 className="dashboard-btn dashboard-btn--ghost"
                                 type="button"
@@ -561,7 +561,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">About</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.about.badge}
                             onChange={(value) => updateByPath(['about', 'badge'], value)}
                         />
@@ -585,7 +585,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">Kenapa Website</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.whyWebsite.badge}
                             onChange={(value) => updateByPath(['whyWebsite', 'badge'], value)}
                         />
@@ -684,17 +684,17 @@ function Dashboard() {
                             }
                         />
                         <Field
-                            label="Label Agent"
+                            label="Label Agen"
                             value={formData.vsWebsite.label}
                             onChange={(value) => updateByPath(['vsWebsite', 'label'], value)}
                         />
                         <Field
-                            label="Agent Desktop"
+                            label="Agen Desktop"
                             value={formData.vsWebsite.agentDesktop}
                             onChange={(value) => updateByPath(['vsWebsite', 'agentDesktop'], value)}
                         />
                         <Field
-                            label="Nomor WA Agent Desktop"
+                            label="Nomor WA Agen Desktop"
                             value={formData.vsWebsite.agentDesktopNumber}
                             onChange={(value) =>
                                 updateByPath(['vsWebsite', 'agentDesktopNumber'], value)
@@ -702,12 +702,12 @@ function Dashboard() {
                             placeholder="628xxxxxxxxxx"
                         />
                         <Field
-                            label="Agent Mobile"
+                            label="Agen Mobile"
                             value={formData.vsWebsite.agentMobile}
                             onChange={(value) => updateByPath(['vsWebsite', 'agentMobile'], value)}
                         />
                         <Field
-                            label="Nomor WA Agent Mobile"
+                            label="Nomor WA Agen Mobile"
                             value={formData.vsWebsite.agentMobileNumber}
                             onChange={(value) =>
                                 updateByPath(['vsWebsite', 'agentMobileNumber'], value)
@@ -754,7 +754,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">Layanan</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.services.badge}
                             onChange={(value) => updateByPath(['services', 'badge'], value)}
                         />
@@ -857,7 +857,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">Kenapa Harus Kami</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.solutions.badge}
                             onChange={(value) => updateByPath(['solutions', 'badge'], value)}
                         />
@@ -880,7 +880,7 @@ function Dashboard() {
                     />
                     <div className="dashboard-list">
                         <div className="dashboard-list-header">
-                            <h3>Highlight</h3>
+                            <h3>Unggulan</h3>
                             <button
                                 className="dashboard-btn dashboard-btn--ghost"
                                 type="button"
@@ -892,13 +892,13 @@ function Dashboard() {
                                     })
                                 }
                             >
-                                Tambah Highlight
+                                Tambah Unggulan
                             </button>
                         </div>
                         {formData.solutions.highlights.map((item, index) => (
                             <div key={`solution-highlight-${index}`} className="dashboard-item">
                                 <div className="dashboard-item-header">
-                                    <span>Highlight {index + 1}</span>
+                                    <span>Unggulan {index + 1}</span>
                                     <button
                                         className="dashboard-btn dashboard-btn--danger"
                                         type="button"
@@ -1020,7 +1020,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">Portofolio</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.portfolio.badge}
                             onChange={(value) => updateByPath(['portfolio', 'badge'], value)}
                         />
@@ -1044,27 +1044,27 @@ function Dashboard() {
                     </div>
                     <div className="dashboard-list">
                         <div className="dashboard-list-header">
-                            <h3>Project</h3>
+                            <h3>Proyek</h3>
                             <button
                                 className="dashboard-btn dashboard-btn--ghost"
                                 type="button"
                                 onClick={() =>
                                     addArrayItem(['portfolio', 'projects'], {
-                                        name: 'Nama Project',
-                                        bullets: ['Highlight'],
+                                        name: 'Nama Proyek',
+                                        bullets: ['Unggulan'],
                                         tags: ['Tag'],
                                         link: '',
                                         images: [],
                                     })
                                 }
                             >
-                                Tambah Project
+                                Tambah Proyek
                             </button>
                         </div>
                         {formData.portfolio.projects.map((project, index) => (
                             <div key={`portfolio-project-${index}`} className="dashboard-item">
                                 <div className="dashboard-item-header">
-                                    <span>Project {index + 1}</span>
+                                    <span>Proyek {index + 1}</span>
                                     <button
                                         className="dashboard-btn dashboard-btn--danger"
                                         type="button"
@@ -1113,7 +1113,7 @@ function Dashboard() {
                                 </div>
                                 <div className="dashboard-list">
                                     <div className="dashboard-list-header">
-                                        <h4>Gambar Project</h4>
+                                        <h4>Gambar Proyek</h4>
                                         <button
                                             className="dashboard-btn dashboard-btn--ghost"
                                             type="button"
@@ -1171,7 +1171,7 @@ function Dashboard() {
                     <h2 className="dashboard-section-title">Harga</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.pricing.badge}
                             onChange={(value) => updateByPath(['pricing', 'badge'], value)}
                         />
@@ -1239,7 +1239,7 @@ function Dashboard() {
                                         }
                                     />
                                     <div className="dashboard-field dashboard-checkbox">
-                                        <label>Highlight</label>
+                                        <label>Unggulan</label>
                                         <input
                                             type="checkbox"
                                             checked={plan.highlight}
@@ -1282,10 +1282,10 @@ function Dashboard() {
 
                     {activeSection === 'contact' ? (
                 <section id="dashboard-contact" className="dashboard-card">
-                    <h2 className="dashboard-section-title">Contact CTA</h2>
+                    <h2 className="dashboard-section-title">CTA Kontak</h2>
                     <div className="dashboard-grid">
                         <Field
-                            label="Badge"
+                            label="Lencana"
                             value={formData.contact.badge}
                             onChange={(value) => updateByPath(['contact', 'badge'], value)}
                         />
@@ -1307,7 +1307,7 @@ function Dashboard() {
                         />
                     </div>
                     <ImageField
-                        label="Background"
+                        label="Latar Belakang"
                         value={formData.contact.backgroundImage}
                         onChange={(value) => updateByPath(['contact', 'backgroundImage'], value)}
                     />
@@ -1350,12 +1350,12 @@ function Dashboard() {
                             onChange={(value) => updateByPath(['footer', 'studioHours'], value)}
                         />
                         <Field
-                            label="Label Links"
+                            label="Label Tautan"
                             value={formData.footer.linksLabel}
                             onChange={(value) => updateByPath(['footer', 'linksLabel'], value)}
                         />
                         <Field
-                            label="Copyright"
+                            label="Hak Cipta"
                             value={formData.footer.copyright}
                             onChange={(value) => updateByPath(['footer', 'copyright'], value)}
                         />
@@ -1365,8 +1365,8 @@ function Dashboard() {
 
                     <div className="dashboard-footer-note">
                         <p>
-                            Status: {status}. Jika ingin pindahkan data ke server nanti, hubungkan penyimpanan
-                            ke backend.
+                            Status: {status}. Jika ingin memindahkan data ke server nanti, hubungkan penyimpanan
+                            ke server backend.
                         </p>
                     </div>
                 </main>

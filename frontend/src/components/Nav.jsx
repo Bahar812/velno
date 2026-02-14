@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useUi } from '../context/UiContext';
-import { useLandingContent } from '../utils/useLandingContent';
+import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
 function Nav() {
     const { language, toggleLanguage } = useUi();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
-    const content = useLandingContent();
+    const content = useLocalizedLandingContent();
     const brand = content?.brand ?? {};
     const navLinks = useMemo(
         () => [
@@ -80,7 +80,7 @@ function Nav() {
                 </div>
                 <div className="hidden items-center gap-3 md:flex">
                     <button className="nav-toggle" onClick={toggleLanguage}>
-                        {language === 'id' ? 'ID' : 'EN'}
+                        {language === 'id' ? 'EN' : 'ID'}
                     </button>
                     <a className="btn-primary" href="#contact">
                         {ctaLabel}
@@ -89,7 +89,7 @@ function Nav() {
                 <button
                     type="button"
                     className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-xl border border-slate-300 bg-white/80 text-[#151323] md:hidden"
-                    aria-label="Toggle navigation menu"
+                    aria-label="Buka atau tutup menu navigasi"
                     aria-expanded={mobileOpen}
                     onClick={() => setMobileOpen((prev) => !prev)}
                 >
@@ -114,7 +114,7 @@ function Nav() {
                         </div>
                         <div className="mt-4 flex items-center gap-3">
                             <button className="nav-toggle" onClick={toggleLanguage}>
-                                {language === 'id' ? 'ID' : 'EN'}
+                                {language === 'id' ? 'EN' : 'ID'}
                             </button>
                             <a
                                 className="btn-primary inline-flex flex-1 items-center justify-center"

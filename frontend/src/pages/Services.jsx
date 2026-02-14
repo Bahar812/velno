@@ -5,65 +5,65 @@ import PageShell from '../components/PageShell';
 
 const services = [
     {
-        title: 'Product Strategy',
-        detail: 'Research, positioning, and MVP planning with laser focus.',
+        title: 'Strategi Produk',
+        detail: 'Riset, positioning, dan perencanaan MVP dengan fokus tajam.',
     },
     {
-        title: 'Brand & Identity',
-        detail: 'From naming to motion system, we craft a cohesive aura.',
+        title: 'Merek & Identitas',
+        detail: 'Dari penamaan hingga sistem gerak, kami membangun identitas yang konsisten.',
     },
     {
-        title: 'Web Experiences',
-        detail: 'High-performance marketing sites and product portals.',
+        title: 'Pengalaman Web',
+        detail: 'Situs pemasaran dan portal produk dengan performa tinggi.',
     },
     {
-        title: 'AI & Automation',
-        detail: 'Custom agents, workflows, and data intelligence layers.',
+        title: 'AI & Otomatisasi',
+        detail: 'Agen kustom, alur kerja otomatis, dan lapisan intelijen data.',
     },
     {
-        title: 'App Engineering',
-        detail: 'Full-stack delivery with Laravel, React, and cloud ops.',
+        title: 'Rekayasa Aplikasi',
+        detail: 'Pengembangan full-stack dengan Laravel, React, dan operasional cloud.',
     },
     {
-        title: 'Growth Retainers',
-        detail: 'Conversion, SEO, and performance tuning on repeat.',
+        title: 'Pendampingan Pertumbuhan',
+        detail: 'Optimasi konversi, SEO, dan performa secara berkelanjutan.',
     },
 ];
 
 const featureGrid = [
     {
-        title: 'Seamless API Integrations',
-        detail: 'We connect your product with the right third-party services fast.',
+        title: 'Integrasi API Mulus',
+        detail: 'Kami menghubungkan produk Anda dengan layanan pihak ketiga yang tepat secara cepat.',
         type: 'integrations',
     },
     {
-        title: 'Trusted Authentication',
-        detail: 'Secure sign-in flows with modern, scalable identity stacks.',
+        title: 'Autentikasi Terpercaya',
+        detail: 'Alur masuk aman dengan sistem identitas modern yang skalabel.',
         type: 'auth',
     },
     {
-        title: 'AI-Speech Recognition',
-        detail: 'Voice-first experiences for smarter, faster user journeys.',
+        title: 'Pengenalan Suara AI',
+        detail: 'Pengalaman berbasis suara untuk alur pengguna yang lebih cerdas dan cepat.',
         type: 'voice',
     },
 ];
 
 const capabilityHighlights = [
     {
-        title: 'Real-Time Data',
-        detail: 'Instant insights for faster decision-making.',
+        title: 'Data Waktu Nyata',
+        detail: 'Insight instan untuk pengambilan keputusan yang lebih cepat.',
     },
     {
-        title: 'Vision Capabilities',
-        detail: 'AI-powered image and video recognition.',
+        title: 'Kapabilitas Visi',
+        detail: 'Pengenalan gambar dan video berbasis AI.',
     },
     {
-        title: 'Optimized UX/UI',
-        detail: 'Smart design that enhances user experience.',
+        title: 'UX/UI Teroptimasi',
+        detail: 'Desain cerdas yang meningkatkan pengalaman pengguna.',
     },
     {
-        title: 'Predictive Analytics',
-        detail: 'Make data-driven decisions with AI insights.',
+        title: 'Analitik Prediktif',
+        detail: 'Ambil keputusan berbasis data dengan insight AI.',
     },
 ];
 
@@ -90,20 +90,20 @@ function Services() {
 
     return (
         <PageShell
-            title="Services that move products from concept to scale."
-            description="Velno blends strategy, design, and engineering to ship software that is fast, stable, and built for growth."
+            title="Layanan yang membawa produk dari konsep hingga skala."
+            description="Velno memadukan strategi, desain, dan rekayasa untuk menghadirkan perangkat lunak yang cepat, stabil, dan siap tumbuh."
         >
             <section className="section-purple pb-24">
                 <div className="mx-auto max-w-6xl px-6">
                     <div className="reveal flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                     <div>
-                        <span className="badge">Services</span>
+                        <span className="badge">Layanan</span>
                         <h2 className="font-display mt-4 text-3xl font-semibold md:text-4xl">
-                            End-to-end product teams for modern brands.
+                            Tim produk menyeluruh untuk merek modern.
                         </h2>
                     </div>
                     <p className="max-w-xl text-white/70">
-                        Small, senior squads that move fast and stay aligned through weekly sprints.
+                        Tim kecil berpengalaman yang bergerak cepat dan selaras lewat sprint mingguan.
                     </p>
                     </div>
                     <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -112,7 +112,7 @@ function Services() {
                                 <h3 className="text-lg font-semibold">{service.title}</h3>
                                 <p className="mt-3 text-sm text-white/70">{service.detail}</p>
                                 <span className="mt-6 inline-flex text-xs font-semibold uppercase tracking-[0.2em] text-violet-300">
-                                    Learn more
+                                    Pelajari lebih lanjut
                                 </span>
                             </div>
                         ))}
@@ -123,13 +123,13 @@ function Services() {
             <section className="mx-auto max-w-6xl px-6 pb-24">
                 <div className="reveal flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
-                        <span className="badge">Features</span>
+                        <span className="badge">Fitur</span>
                         <h2 className="font-display mt-4 text-3xl font-semibold md:text-4xl">
-                            Seamless systems for modern software teams.
+                            Sistem yang mulus untuk tim perangkat lunak modern.
                         </h2>
                     </div>
                     <p className="max-w-xl text-white/70">
-                        Crafted integrations, security, and AI layers that power ambitious products.
+                        Integrasi, keamanan, dan lapisan AI yang dirancang matang untuk produk ambisius.
                     </p>
                 </div>
                 <div className="mt-10 grid gap-6 md:grid-cols-3">

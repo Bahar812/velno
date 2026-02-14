@@ -1,17 +1,10 @@
 import React from 'react';
-import { useLandingContent } from '../utils/useLandingContent';
-
-const navLinks = [
-    { label: 'Home', href: '#home' },
-    { label: 'Services', href: '#services' },
-    { label: 'Portfolio', href: '#portfolio' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
-];
+import { useUi } from '../context/UiContext';
+import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
 function Footer() {
-    const content = useLandingContent();
+    const { language } = useUi();
+    const content = useLocalizedLandingContent();
     const footer = content?.footer ?? {};
     const brand = content?.brand ?? {};
     const logoText = brand.logoText ?? 'Velno Softwarehouse';
@@ -19,15 +12,23 @@ function Footer() {
     const logoImage = brand.logoImage ?? '';
     const description =
         footer.description ??
-        'A premium software house focused on digital products, brand systems, and automation.';
+        'Perusahaan pengembang perangkat lunak premium yang berfokus pada produk digital, sistem merek, dan otomatisasi.';
     const email = footer.email ?? 'hello@velno.studio';
-    const studioLabel = footer.studioLabel ?? 'Studio';
-    const studioLocation = footer.studioLocation ?? 'Jakarta - Singapore - Remote';
+    const studioLabel = footer.studioLabel ?? 'Kantor';
+    const studioLocation = footer.studioLocation ?? 'Jakarta - Singapore - Jarak Jauh';
     const studioPhone = footer.studioPhone ?? '+62 811 234 567';
-    const studioHours = footer.studioHours ?? 'Mon - Fri, 09.00 - 18.00';
-    const linksLabel = footer.linksLabel ?? 'Links';
+    const studioHours = footer.studioHours ?? 'Sen - Jum, 09.00 - 18.00';
+    const linksLabel = footer.linksLabel ?? 'Tautan';
     const copyright =
-        footer.copyright ?? '(c) 2026 Velno Softwarehouse. All rights reserved.';
+        footer.copyright ?? '(c) 2026 Velno Softwarehouse. Semua hak dilindungi.';
+    const navLinks = [
+        { label: language === 'id' ? 'Beranda' : 'Home', href: '#home' },
+        { label: language === 'id' ? 'Layanan' : 'Services', href: '#services' },
+        { label: language === 'id' ? 'Portofolio' : 'Portfolio', href: '#portfolio' },
+        { label: language === 'id' ? 'Harga' : 'Pricing', href: '#pricing' },
+        { label: language === 'id' ? 'Tentang' : 'About', href: '#about' },
+        { label: language === 'id' ? 'Kontak' : 'Contact', href: '#contact' },
+    ];
     return (
         <footer className="border-t border-white/10 py-12">
             <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-[1.4fr_1fr_1fr]">

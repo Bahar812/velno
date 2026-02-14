@@ -13,7 +13,8 @@ import {
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import HowWeWork from '../components/HowWeWork';
-import { useLandingContent } from '../utils/useLandingContent';
+import { useUi } from '../context/UiContext';
+import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
 const iconMap = {
     PlugZap,
@@ -31,7 +32,8 @@ const buildWhatsappLink = (value) => {
 };
 
 function Home() {
-    const content = useLandingContent();
+    const { language } = useUi();
+    const content = useLocalizedLandingContent();
     const {
         hero,
         about,
@@ -53,6 +55,28 @@ function Home() {
         'portfolio-hero-card',
         'portfolio-hero-card portfolio-hero-card--wide',
     ];
+    const homeText =
+        language === 'id'
+            ? {
+                happyClients: 'Klien Puas',
+                modernDesignTitle: 'Desain Modern',
+                modernDesignBody: 'Website profesional',
+                quickConsultTitle: 'Konsultasi Yuk',
+                quickConsultBody: 'Respon cepat',
+                freeRequest: 'Permintaan Gratis',
+                visitWebsite: 'Kunjungi Website',
+                includeLabel: 'Termasuk:',
+            }
+            : {
+                happyClients: 'Happy Clients',
+                modernDesignTitle: 'Modern Design',
+                modernDesignBody: 'Professional website',
+                quickConsultTitle: 'Let us talk',
+                quickConsultBody: 'Fast response',
+                freeRequest: 'Free Request',
+                visitWebsite: 'Visit Website',
+                includeLabel: 'Include:',
+            };
     const agentDesktopLink = buildWhatsappLink(vsWebsite?.agentDesktopNumber);
     const agentMobileLink = buildWhatsappLink(vsWebsite?.agentMobileNumber);
     useEffect(() => {
@@ -206,15 +230,15 @@ function Home() {
 
     return (
         <div>
-            <header id="home" className="portfolio-hero -mt-20 pt-20">
+            <header id="home" className="portfolio-hero home-hero -mt-20 pt-20">
                 <section className="mx-auto max-w-6xl px-6 pb-20 pt-8">
-                    <div className="grid gap-12 grid-cols-1 sm:grid-cols-[1.05fr_0.95fr] sm:items-center">
-                        <div className="reveal order-1 sm:order-1">
+                    <div className="home-hero-grid grid grid-cols-[1.08fr_0.92fr] items-start gap-4 sm:items-center sm:gap-12">
+                        <div className="reveal home-hero-copy min-w-0">
                             <span className="portfolio-hero-kicker">{hero.kicker}</span>
-                            <h1 className="font-display mt-5 text-4xl font-semibold leading-tight md:text-6xl">
+                            <h1 className="home-hero-title font-display mt-5 text-4xl font-semibold leading-tight md:text-6xl">
                                 {hero.title}
                             </h1>
-                            <p className="portfolio-hero-subtitle mt-5 max-w-xl text-base md:text-lg">
+                            <p className="portfolio-hero-subtitle home-hero-subtitle mt-5 max-w-xl text-base md:text-lg">
                                 {hero.subtitle}
                             </p>
                             <div className="portfolio-hero-form mt-8">
@@ -239,7 +263,7 @@ function Home() {
                                 <button className="portfolio-hero-cta">{hero.ctaLabel}</button>
                             </div>
                         </div>
-                        <div className="reveal order-2 sm:order-2">
+                        <div className="reveal home-hero-media min-w-0">
                             <div className="portfolio-hero-collage">
                                 {heroFloats.map((item, index) => (
                                     <div
@@ -378,15 +402,15 @@ function Home() {
                                 </div>
                                 <div className="vs-float-card vs-float-card--left">
                                     <strong>120+</strong>
-                                    Happy Client
+                                    {homeText.happyClients}
                                 </div>
                                 <div className="vs-float-card vs-float-card--right">
-                                    <strong>Desain Modern</strong>
-                                    Website profesional
+                                    <strong>{homeText.modernDesignTitle}</strong>
+                                    {homeText.modernDesignBody}
                                 </div>
                                 <div className="vs-float-card vs-float-card--bottom">
-                                    <strong>Konsultasi Yuk</strong>
-                                    Respon cepat
+                                    <strong>{homeText.quickConsultTitle}</strong>
+                                    {homeText.quickConsultBody}
                                 </div>
                                 <div
                                     className="vs-mini-card vs-mini-card--a"
@@ -396,7 +420,7 @@ function Home() {
                                             : undefined,
                                     }}
                                 >
-                                    <span>Free Request</span>
+                                    <span>{homeText.freeRequest}</span>
                                 </div>
                             </div>
                         </div>
@@ -540,7 +564,6 @@ function Home() {
                                 {portfolio.description}
                             </p>
                         </div>
-                        <button className="btn-ghost">{portfolio.buttonLabel}</button>
                     </div>
                     <div className="mt-12 grid gap-8">
                         {portfolio.projects.map((project) => (
@@ -563,7 +586,7 @@ function Home() {
                                         target="_blank"
                                         rel="noreferrer"
                                     >
-                                        Kunjungi Website
+                                        {homeText.visitWebsite}
                                     </a>
                                     <div className="mt-4 flex flex-wrap gap-3">
                                         {project.tags.filter(Boolean).map((tag) => (
@@ -652,7 +675,7 @@ function Home() {
                                     <div className="flex h-full flex-col rounded-2xl bg-white p-8 shadow-lg">
                                         <h3 className="text-2xl font-semibold text-slate-800">{plan.name}</h3>
                                         <p className="mt-4 text-4xl font-bold text-slate-900">{plan.price}</p>
-                                        <p className="mt-2 text-sm text-slate-500">Include:</p>
+                                        <p className="mt-2 text-sm text-slate-500">{homeText.includeLabel}</p>
                                         <div className="mt-4 space-y-3 text-sm">
                                             {plan.features.filter(Boolean).map((item) => (
                                                 <div key={item} className="flex items-start gap-2 text-slate-700">

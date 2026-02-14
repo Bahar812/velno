@@ -4,7 +4,7 @@ export const defaultLandingContent = {
         logoInitials: 'V',
         logoImage: '',
         ctaLabelId: 'Hubungi Kami',
-        ctaLabelEn: 'Book a Call',
+        ctaLabelEn: 'Hubungi Kami',
     },
     hero: {
         kicker: 'Mulai Sekarang',
@@ -41,7 +41,7 @@ export const defaultLandingContent = {
         badge: 'About Us',
         sentence:
             "We don't just create websites; we build experiences that connect, engage, and make an impact.",
-        buttonLabel: 'Book an Appointment',
+        buttonLabel: 'Buat Janji',
     },
     whyWebsite: {
         badge: 'Kenapa Website',
@@ -79,13 +79,13 @@ export const defaultLandingContent = {
         pill: 'Sudah Saatnya',
         title: 'Bisnis Kamu Punya\nWebsite Berkelas',
         paragraphs: [
-            'Kami menyediakan jasa pembuatan website profesional dengan harga terjangkau. Website siap pakai, user friendly, dan sudah teroptimasi SEO agar konversi lebih tinggi.',
+            'Kami menyediakan jasa pembuatan website profesional dengan harga terjangkau. Website siap pakai, mudah digunakan, dan sudah teroptimasi SEO agar konversi lebih tinggi.',
             'Bukan hanya website, kami juga bantu iklan, branding, hingga pengelolaan media sosial sesuai kebutuhan bisnismu.',
         ],
-        label: 'Hubungi Salah satu Agent Velno',
-        agentDesktop: 'Agent Ajeng',
+        label: 'Hubungi Salah Satu Agen Velno',
+        agentDesktop: 'Agen Ajeng',
         agentDesktopNumber: '62811234567',
-        agentMobile: 'Agent Dian',
+        agentMobile: 'Agen Dian',
         agentMobileNumber: '62811234567',
         mainImage:
             'https://images.unsplash.com/photo-1758876019673-704b039d405c?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=1600',
@@ -190,13 +190,13 @@ export const defaultLandingContent = {
         badge: 'Portofolio',
         title: 'Menampilkan karya terbaik Anda dengan presisi.',
         description:
-            'Software house kami menghadirkan website dan produk digital berkualitas yang memadukan craft UI, performa, dan pertumbuhan terukur.',
+            'Tim kami menghadirkan website dan produk digital berkualitas yang memadukan kualitas UI, performa, dan pertumbuhan terukur.',
         buttonLabel: 'Lihat Portofolio Lainnya',
         projects: [
             {
                 name: 'Cruuzion Gym',
-                bullets: ['Integrasi AI', 'Desain Responsif', 'Layout Kustom', 'Loading Cepat'],
-                tags: ['Company Profile', 'Portofolio'],
+                bullets: ['Integrasi AI', 'Desain Responsif', 'Layout Kustom', 'Muat Cepat'],
+                tags: ['Profil Perusahaan', 'Portofolio'],
                 link: 'https://lemonide.tech',
                 images: [
                     'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1000&auto=format&fit=crop',
@@ -206,7 +206,7 @@ export const defaultLandingContent = {
             {
                 name: 'Viper Studio',
                 bullets: ['Tipografi Modern', 'Ramah Pengguna', 'CMS Fleksibel', 'Optimasi SEO'],
-                tags: ['Branding', 'Studio'],
+                tags: ['Merek', 'Studio'],
                 link: 'https://viperstudio.co',
                 images: [
                     'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop',
@@ -238,7 +238,7 @@ export const defaultLandingContent = {
         ctaLabel: 'AMBIL PAKET INI',
         plans: [
             {
-                name: 'Paket Lite',
+                name: 'Paket Dasar',
                 price: 'Rp 1.850.000',
                 highlight: false,
                 features: [
@@ -246,47 +246,47 @@ export const defaultLandingContent = {
                     'Desain Standart',
                     'Optimasi SEO Dasar',
                     'Gratis AI Blog Generator',
-                    'Full Service & Maintenance 24/7',
+                    'Layanan Penuh & Pemeliharaan 24/7',
                 ],
                 unavailable: [
-                    'Request Fitur',
+                    'Permintaan Fitur',
                     'Multi Bahasa',
                     'Optimasi UI / UX',
-                    'Optimasi Speed Loading',
-                    'Bonus Business Kit',
+                    'Optimasi Kecepatan Muat',
+                    'Bonus Paket Bisnis',
                 ],
             },
             {
-                name: 'Paket Premium',
+                name: 'Paket Unggulan',
                 price: 'Rp 2.600.000',
                 highlight: true,
                 features: [
                     'Website Siap Pakai',
                     'Desain Modern',
                     'Optimasi SEO Dasar',
-                    'Request Fitur',
+                    'Permintaan Fitur',
                     'Multi Bahasa',
                     'Optimasi UI / UX',
                     'Gratis AI Blog Generator',
-                    'Full Service & Maintenance 24/7',
+                    'Layanan Penuh & Pemeliharaan 24/7',
                 ],
-                unavailable: ['Optimasi Speed Loading', 'Bonus Business Kit'],
+                unavailable: ['Optimasi Kecepatan Muat', 'Bonus Paket Bisnis'],
             },
             {
-                name: 'Paket Luxury',
+                name: 'Paket Eksklusif',
                 price: 'Rp 4.200.000',
                 highlight: false,
                 features: [
                     'Website Siap Pakai',
                     'Desain Unik / Bisa Request',
                     'Optimasi SEO Lanjutan',
-                    'Request Fitur',
+                    'Permintaan Fitur',
                     'Multi Bahasa',
                     'Optimasi UI / UX',
-                    'Optimasi Speed Loading',
-                    'Bonus Business Kit (+Logo)',
+                    'Optimasi Kecepatan Muat',
+                    'Bonus Paket Bisnis (+Logo)',
                     'Gratis AI Blog Generator',
-                    'Full Service & Maintenance 24/7',
+                    'Layanan Penuh & Pemeliharaan 24/7',
                 ],
                 unavailable: [],
             },
@@ -302,13 +302,13 @@ export const defaultLandingContent = {
     },
     footer: {
         description:
-            'A premium software house focused on digital products, brand systems, and automation.',
+            'Perusahaan pengembang perangkat lunak premium yang berfokus pada produk digital, sistem merek, dan otomatisasi.',
         email: 'hello@velno.studio',
-        studioLabel: 'Studio',
-        studioLocation: 'Jakarta - Singapore - Remote',
+        studioLabel: 'Kantor',
+        studioLocation: 'Jakarta - Singapore - Jarak Jauh',
         studioPhone: '+62 811 234 567',
-        studioHours: 'Mon - Fri, 09.00 - 18.00',
-        linksLabel: 'Links',
-        copyright: '(c) 2026 Velno Softwarehouse. All rights reserved.',
+        studioHours: 'Sen - Jum, 09.00 - 18.00',
+        linksLabel: 'Tautan',
+        copyright: '(c) 2026 Velno Softwarehouse. Semua hak dilindungi.',
     },
 };

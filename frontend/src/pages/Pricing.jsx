@@ -3,51 +3,51 @@ import PageShell from '../components/PageShell';
 
 const pricing = [
     {
-        name: 'Lite Package',
+        name: 'Paket Dasar',
         price: 'Rp 3.500.000',
         highlight: false,
-        summary: 'Ready-to-use website only, without additional add-ons.',
+        summary: 'Website siap pakai tanpa tambahan fitur ekstra.',
         items: [
-            'Ready-to-use website',
-            'Standard design',
-            'Basic SEO optimization',
-            'Feature requests',
-            'Multi-language support',
-            'UI/UX optimization',
-            'Speed optimization',
-            'Business kit bonus',
+            'Website siap pakai',
+            'Desain standar',
+            'Optimasi SEO dasar',
+            'Permintaan fitur',
+            'Dukungan multi bahasa',
+            'Optimasi UI/UX',
+            'Optimasi kecepatan',
+            'Bonus paket bisnis',
         ],
     },
     {
-        name: 'Premium Package',
+        name: 'Paket Unggulan',
         price: 'Rp 6.XXX.000',
         highlight: true,
-        summary: 'Most popular package with better visuals and more features.',
+        summary: 'Paket terpopuler dengan visual lebih baik dan fitur lebih lengkap.',
         items: [
-            'Ready-to-use website',
-            'Modern design',
-            'Basic SEO optimization',
-            'Feature requests',
-            'Multi-language support',
-            'UI/UX optimization',
-            'Speed optimization',
-            'Business kit bonus',
+            'Website siap pakai',
+            'Desain modern',
+            'Optimasi SEO dasar',
+            'Permintaan fitur',
+            'Dukungan multi bahasa',
+            'Optimasi UI/UX',
+            'Optimasi kecepatan',
+            'Bonus paket bisnis',
         ],
     },
     {
-        name: 'Luxury Package',
+        name: 'Paket Eksklusif',
         price: 'Rp 10.XXX.000',
         highlight: false,
-        summary: 'Recommended for professional companies with extra bonuses.',
+        summary: 'Direkomendasikan untuk perusahaan profesional dengan bonus tambahan.',
         items: [
-            'Ready-to-use website',
-            'Unique design / custom requests',
-            'Advanced SEO optimization',
-            'Feature requests',
-            'Multi-language support',
-            'UI/UX optimization',
-            'Speed optimization',
-            'Business kit bonus (+logo)',
+            'Website siap pakai',
+            'Desain unik / permintaan kustom',
+            'Optimasi SEO lanjutan',
+            'Permintaan fitur',
+            'Dukungan multi bahasa',
+            'Optimasi UI/UX',
+            'Optimasi kecepatan',
+            'Bonus paket bisnis (+logo)',
         ],
     },
 ];
@@ -55,8 +55,8 @@ const pricing = [
 function Pricing() {
     return (
         <PageShell
-            title="Website Development Pricing - Surabaya"
-            description="A quick overview of our website services in Surabaya. Custom packages are available to match your exact needs."
+            title="Harga Pembuatan Website - Surabaya"
+            description="Ringkasan layanan pembuatan website kami di Surabaya. Paket kustom tersedia sesuai kebutuhan Anda."
         >
             <section className="section-purple pb-24">
                 <div className="mx-auto max-w-6xl px-6">
@@ -75,9 +75,9 @@ function Pricing() {
                                     ))}
                                 </ul>
                                 <div className="mt-8 text-sm text-white/70">
-                                    Interested in this website package?
+                                    Tertarik dengan paket website ini?
                                 </div>
-                                <button className="btn-primary mt-3 w-full">Choose This Package</button>
+                                <button className="btn-primary mt-3 w-full">Pilih Paket Ini</button>
                             </div>
                         ))}
                     </div>

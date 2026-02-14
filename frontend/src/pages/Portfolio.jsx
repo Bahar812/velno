@@ -6,8 +6,8 @@ const portfolioProjects = [
     {
         year: '2024',
         name: 'Lemonide Tech',
-        bullets: ['AI Integration', 'Responsive Design', 'Custom Layouts', 'Fast Loading'],
-        tags: ['E-Commerce', 'Portfolio'],
+        bullets: ['Integrasi AI', 'Desain Responsif', 'Layout Kustom', 'Muat Cepat'],
+        tags: ['E-Dagang', 'Portofolio'],
         images: [
             'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop',
@@ -16,8 +16,8 @@ const portfolioProjects = [
     {
         year: '2025',
         name: 'Viper Studio',
-        bullets: ['Modern Typography', 'User Friendly', 'Flexible CMS', 'SEO Optimized'],
-        tags: ['Branding', 'Studio'],
+        bullets: ['Tipografi Modern', 'Ramah Pengguna', 'CMS Fleksibel', 'SEO Teroptimasi'],
+        tags: ['Merek', 'Studio'],
         images: [
             'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1000&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=1000&auto=format&fit=crop',
@@ -52,48 +52,48 @@ function Portfolio() {
                 <div className="mx-auto max-w-6xl px-6 pb-20 pt-8">
                     <div className="grid gap-12 md:grid-cols-[1.05fr_0.95fr] md:items-center">
                         <div className="reveal">
-                            <span className="portfolio-hero-kicker">Explore the Work</span>
+                            <span className="portfolio-hero-kicker">Jelajahi Karya</span>
                             <h1 className="font-display mt-5 text-4xl font-semibold leading-tight md:text-6xl">
-                                Discover standout digital builds for modern brands
+                                Temukan karya digital unggulan untuk merek modern
                             </h1>
                             <p className="portfolio-hero-subtitle mt-5 max-w-xl text-base md:text-lg">
-                                From strategy to launch, we craft premium websites and products that convert
-                                attention into momentum.
+                                Dari strategi hingga peluncuran, kami merancang website dan produk premium
+                                yang mengubah perhatian menjadi pertumbuhan.
                             </p>
                             <div className="portfolio-hero-form mt-8">
                                 <div className="portfolio-hero-field">
                                     <span className="portfolio-hero-field-icon">BR</span>
                                     <div>
-                                        <p className="portfolio-hero-field-title">Brand Focus</p>
-                                        <p className="portfolio-hero-field-sub">Fintech, SaaS, Retail</p>
+                                        <p className="portfolio-hero-field-title">Fokus Merek</p>
+                                        <p className="portfolio-hero-field-sub">Fintech, SaaS, Ritel</p>
                                     </div>
                                 </div>
                                 <div className="portfolio-hero-field">
                                     <span className="portfolio-hero-field-icon">TL</span>
                                     <div>
-                                        <p className="portfolio-hero-field-title">Timeline</p>
-                                        <p className="portfolio-hero-field-sub">4-8 weeks</p>
+                                        <p className="portfolio-hero-field-title">Waktu Pengerjaan</p>
+                                        <p className="portfolio-hero-field-sub">4-8 minggu</p>
                                     </div>
                                 </div>
                                 <div className="portfolio-hero-field">
                                     <span className="portfolio-hero-field-icon">BD</span>
                                     <div>
-                                        <p className="portfolio-hero-field-title">Budget Range</p>
+                                        <p className="portfolio-hero-field-title">Rentang Anggaran</p>
                                         <p className="portfolio-hero-field-sub">Rp 10-50 jt</p>
                                     </div>
                                 </div>
-                                <button className="portfolio-hero-cta">Get Started</button>
+                                <button className="portfolio-hero-cta">Mulai Sekarang</button>
                             </div>
                         </div>
                         <div className="reveal">
                             <div className="portfolio-hero-collage">
                                 <div className="portfolio-hero-float portfolio-hero-float--top">
-                                    <strong>120+ Launches</strong>
-                                    Successful digital releases
+                                    <strong>120+ Peluncuran</strong>
+                                    Rilis digital yang sukses
                                 </div>
                                 <div className="portfolio-hero-float portfolio-hero-float--right">
-                                    <strong>98% Delight</strong>
-                                    Client satisfaction score
+                                    <strong>98% Kepuasan</strong>
+                                    Skor kepuasan klien
                                 </div>
                                 <div
                                     className="portfolio-hero-card portfolio-hero-card--tall"
@@ -133,12 +133,12 @@ function Portfolio() {
                 <div className="mx-auto max-w-6xl px-6">
                     <div className="reveal flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <span className="badge">Portfolio</span>
+                            <span className="badge">Portofolio</span>
                             <h2 className="font-display mt-4 text-3xl font-semibold md:text-4xl">
-                                Projects that prove velocity and craft.
+                                Proyek yang membuktikan kecepatan dan kualitas.
                             </h2>
                         </div>
-                        <button className="btn-ghost">View More Works</button>
+                        <button className="btn-ghost">Lihat Lebih Banyak Karya</button>
                     </div>
                     <div className="mt-12 space-y-10">
                         {portfolioProjects.map((project) => (

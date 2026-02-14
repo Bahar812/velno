@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 const UiContext = createContext(null);
 
 function UiProvider({ children }) {
-    const [language, setLanguage] = useState('en');
+    const [language, setLanguage] = useState('id');
 
     useEffect(() => {
         const storedLanguage = localStorage.getItem('velno-language');
