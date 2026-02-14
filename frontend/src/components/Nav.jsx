@@ -43,7 +43,7 @@ function Nav() {
                         <img
                             src={logoImage}
                             alt={logoText || 'Logo'}
-                            className="h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[260px] md:h-16 md:max-w-none"
+                            className="h-14 w-auto max-w-[260px] object-contain sm:h-16 sm:max-w-[320px] md:h-20 md:max-w-[420px]"
                         />
                     ) : (
                         <>
