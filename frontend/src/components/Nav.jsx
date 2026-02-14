@@ -5,6 +5,7 @@ import { useLandingContent } from '../utils/useLandingContent';
 function Nav() {
     const { language, toggleLanguage } = useUi();
     const [scrolled, setScrolled] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const content = useLandingContent();
     const brand = content?.brand ?? {};
     const navLinks = useMemo(
@@ -33,6 +34,16 @@ function Nav() {
         onScroll();
         window.addEventListener('scroll', onScroll, { passive: true });
         return () => window.removeEventListener('scroll', onScroll);
+    }, []);
+
+    useEffect(() => {
+        const onResize = () => {
+            if (window.innerWidth >= 768) {
+                setMobileOpen(false);
+            }
+        };
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
     }, []);
 
     return (
@@ -67,7 +78,7 @@ function Nav() {
                         </a>
                     ))}
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="hidden items-center gap-3 md:flex">
                     <button className="nav-toggle" onClick={toggleLanguage}>
                         {language === 'id' ? 'ID' : 'EN'}
                     </button>
@@ -75,6 +86,46 @@ function Nav() {
                         {ctaLabel}
                     </a>
                 </div>
+                <button
+                    type="button"
+                    className="inline-flex h-10 w-10 flex-col items-center justify-center rounded-xl border border-slate-300 bg-white/80 text-[#151323] md:hidden"
+                    aria-label="Toggle navigation menu"
+                    aria-expanded={mobileOpen}
+                    onClick={() => setMobileOpen((prev) => !prev)}
+                >
+                    <span className="sr-only">Menu</span>
+                    <span className="block h-0.5 w-5 bg-current" />
+                    <span className="block h-0.5 w-5 bg-current mt-1.5" />
+                    <span className="block h-0.5 w-5 bg-current mt-1.5" />
+                </button>
+                {mobileOpen ? (
+                    <div className="w-full rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-lg backdrop-blur md:hidden">
+                        <div className="flex flex-col gap-3 text-sm text-slate-700">
+                            {navLinks.map((link) => (
+                                <a
+                                    key={`mobile-${link.href}`}
+                                    href={link.href}
+                                    className="rounded-lg px-2 py-2 hover:bg-slate-100"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
+                        </div>
+                        <div className="mt-4 flex items-center gap-3">
+                            <button className="nav-toggle" onClick={toggleLanguage}>
+                                {language === 'id' ? 'ID' : 'EN'}
+                            </button>
+                            <a
+                                className="btn-primary inline-flex flex-1 items-center justify-center"
+                                href="#contact"
+                                onClick={() => setMobileOpen(false)}
+                            >
+                                {ctaLabel}
+                            </a>
+                        </div>
+                    </div>
+                ) : null}
             </nav>
         </div>
     );
