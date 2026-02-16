@@ -22,12 +22,29 @@ const dbConfig = {
 };
 
 let pool;
+let dbReady = false;
+let dbConnecting = false;
 
 const ensureDatabase = async () => {
     const { database, ...baseConfig } = dbConfig;
     const adminPool = await mysql.createPool(baseConfig);
-    await adminPool.query(`CREATE DATABASE IF NOT EXISTS \`${database}\``);
-    await adminPool.end();
+    try {
+        await adminPool.query(`CREATE DATABASE IF NOT EXISTS \`${database}\``);
+    } catch (error) {
+        const noCreatePrivilege = [
+            'ER_DBACCESS_DENIED_ERROR',
+            'ER_SPECIFIC_ACCESS_DENIED_ERROR',
+            'ER_ACCESS_DENIED_ERROR',
+        ].includes(error?.code);
+        if (!noCreatePrivilege) {
+            throw error;
+        }
+        // Some managed DB users cannot create databases; use existing DB_NAME instead.
+        // eslint-disable-next-line no-console
+        console.warn('Skipping CREATE DATABASE (insufficient privilege).');
+    } finally {
+        await adminPool.end();
+    }
 };
 
 const ensureTables = async () => {
@@ -44,13 +61,39 @@ const initDatabase = async () => {
     await ensureDatabase();
     pool = await mysql.createPool(dbConfig);
     await ensureTables();
+    dbReady = true;
+};
+
+const connectDatabaseWithRetry = async () => {
+    if (dbConnecting) {
+        return;
+    }
+    dbConnecting = true;
+    try {
+        await initDatabase();
+        // eslint-disable-next-line no-console
+        console.log('Database ready.');
+    } catch (error) {
+        dbReady = false;
+        // eslint-disable-next-line no-console
+        console.error('Database init failed, retrying in 5s:', error?.message || error);
+        setTimeout(() => {
+            dbConnecting = false;
+            connectDatabaseWithRetry();
+        }, 5000);
+        return;
+    }
+    dbConnecting = false;
 };
 
 app.get('/api/health', (req, res) => {
-    res.json({ ok: true });
+    res.json({ ok: true, dbReady });
 });
 
 app.get('/api/landing-content', async (req, res) => {
+    if (!pool || !dbReady) {
+        return res.status(503).json({ error: 'Database is not ready yet.' });
+    }
     try {
         const [rows] = await pool.query('SELECT content FROM landing_content WHERE id = 1 LIMIT 1');
         if (!rows.length) {
@@ -65,6 +108,9 @@ app.get('/api/landing-content', async (req, res) => {
 });
 
 app.put('/api/landing-content', async (req, res) => {
+    if (!pool || !dbReady) {
+        return res.status(503).json({ error: 'Database is not ready yet.' });
+    }
     try {
         const payload = req.body ?? {};
         const serialized = JSON.stringify(payload);
@@ -85,15 +131,8 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
 });
 
-initDatabase()
-    .then(() => {
-        app.listen(PORT, '0.0.0.0', () => {
-            // eslint-disable-next-line no-console
-            console.log(`Server running on port ${PORT}`);
-        });
-    })
-    .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('Failed to start server:', error);
-        process.exit(1);
-    });
+app.listen(PORT, '0.0.0.0', () => {
+    // eslint-disable-next-line no-console
+    console.log(`Server running on port ${PORT}`);
+    connectDatabaseWithRetry();
+});
