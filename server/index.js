@@ -11,12 +11,39 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ extended: true, limit: '15mb' }));
 
+const parseDatabaseUrl = (value) => {
+    if (!value) {
+        return {};
+    }
+    try {
+        const parsed = new URL(value);
+        if (parsed.protocol !== 'mysql:') {
+            return {};
+        }
+        const database = parsed.pathname.replace(/^\/+/, '');
+        return {
+            host: parsed.hostname || undefined,
+            port: parsed.port ? Number(parsed.port) : undefined,
+            user: parsed.username ? decodeURIComponent(parsed.username) : undefined,
+            password: parsed.password ? decodeURIComponent(parsed.password) : undefined,
+            database: database || undefined,
+        };
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.warn('Invalid DATABASE_URL format; falling back to DB_* env vars.');
+        return {};
+    }
+};
+
+const dbUrlConfig = parseDatabaseUrl(process.env.DATABASE_URL);
+
 const dbConfig = {
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: Number(process.env.DB_PORT || 3306),
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: process.env.DB_NAME || 'velno',
+    host: process.env.DB_HOST || dbUrlConfig.host || '127.0.0.1',
+    port: Number(process.env.DB_PORT || dbUrlConfig.port || 3306),
+    user: process.env.DB_USER || dbUrlConfig.user || 'root',
+    password:
+        process.env.DB_PASSWORD !== undefined ? process.env.DB_PASSWORD : dbUrlConfig.password || '',
+    database: process.env.DB_NAME || dbUrlConfig.database || 'velno',
     waitForConnections: true,
     connectionLimit: 10,
 };
