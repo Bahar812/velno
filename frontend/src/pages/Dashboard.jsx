@@ -26,6 +26,9 @@ const cloneContent = (value) => {
     return JSON.parse(JSON.stringify(value));
 };
 
+const getErrorMessage = (error) =>
+    error instanceof Error && error.message ? error.message : 'Unknown error';
+
 const normalizeLines = (value) =>
     value
         .split('\n')
@@ -239,12 +242,12 @@ function Dashboard() {
                 .then(() => {
                     setStatus('Tersimpan otomatis');
                 })
-                .catch(() => {
+                .catch((error) => {
+                    const reason = getErrorMessage(error);
                     setStatus('Gagal menyimpan ke database');
                     setToast({
                         type: 'info',
-                        message:
-                            'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                        message: `Gagal menyimpan ke database. ${reason}`,
                     });
                     window.clearTimeout(toastTimerRef.current);
                     toastTimerRef.current = window.setTimeout(() => setToast(null), 3000);
@@ -298,12 +301,12 @@ function Dashboard() {
                 setStatus('Tersimpan');
                 setToast({ type: 'success', message: 'Tersimpan! Perubahan berhasil disimpan.' });
             })
-            .catch(() => {
+            .catch((error) => {
+                const reason = getErrorMessage(error);
                 setStatus('Gagal menyimpan ke database');
                 setToast({
                     type: 'info',
-                    message:
-                        'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                    message: `Gagal menyimpan ke database. ${reason}`,
                 });
             })
             .finally(() => {
@@ -321,12 +324,12 @@ function Dashboard() {
                 setStatus('Dikembalikan ke default');
                 setToast({ type: 'info', message: 'Konten dikembalikan ke default.' });
             })
-            .catch(() => {
+            .catch((error) => {
+                const reason = getErrorMessage(error);
                 setStatus('Gagal menyimpan ke database');
                 setToast({
                     type: 'info',
-                    message:
-                        'Gagal menyimpan ke database. Periksa koneksi server atau konfigurasi DB.',
+                    message: `Gagal menyimpan ke database. ${reason}`,
                 });
             })
             .finally(() => {
@@ -343,7 +346,8 @@ function Dashboard() {
                         <p className="dashboard-kicker">Halaman Landing Velno</p>
                         <h1 className="dashboard-title">Dashboard Konten</h1>
                         <p className="dashboard-note">
-                            Semua perubahan tersimpan di browser. Gunakan gambar yang tidak terlalu besar.
+                            Perubahan disimpan lokal dan disinkronkan ke database jika API aktif.
+                            Gunakan gambar yang tidak terlalu besar.
                         </p>
                     </div>
                     <div className="dashboard-actions">
