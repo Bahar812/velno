@@ -55,6 +55,8 @@ function Home() {
     const [isWhyComparisonDragging, setIsWhyComparisonDragging] = useState(false);
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
     const serviceWheelLockRef = useRef(0);
+    const serviceSwipeRef = useRef(null);
+    const serviceClickBlockRef = useRef(0);
     const content = useLocalizedLandingContent();
     const {
         hero,
@@ -152,6 +154,52 @@ function Home() {
 
         serviceWheelLockRef.current = now;
         setActiveServiceIndex((value) => value + (wheelDelta > 0 ? 1 : -1));
+    };
+    const handleServiceSwipeStart = (event) => {
+        if (serviceItems.length < 2 || event.pointerType === 'mouse') {
+            return;
+        }
+
+        serviceSwipeRef.current = {
+            pointerId: event.pointerId,
+            x: event.clientX,
+            y: event.clientY,
+        };
+        event.currentTarget.setPointerCapture?.(event.pointerId);
+    };
+    const handleServiceSwipeEnd = (event) => {
+        const swipeStart = serviceSwipeRef.current;
+        if (!swipeStart || swipeStart.pointerId !== event.pointerId) {
+            return;
+        }
+
+        const deltaX = event.clientX - swipeStart.x;
+        const deltaY = event.clientY - swipeStart.y;
+        const isHorizontalSwipe = Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
+
+        serviceSwipeRef.current = null;
+        if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+            event.currentTarget.releasePointerCapture?.(event.pointerId);
+        }
+
+        if (!isHorizontalSwipe) {
+            return;
+        }
+
+        serviceClickBlockRef.current = Date.now() + 260;
+        setActiveServiceIndex((value) => value + (deltaX < 0 ? 1 : -1));
+    };
+    const handleServiceSwipeCancel = (event) => {
+        serviceSwipeRef.current = null;
+        if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+            event.currentTarget.releasePointerCapture?.(event.pointerId);
+        }
+    };
+    const handleServiceCardClick = (index) => {
+        if (Date.now() < serviceClickBlockRef.current) {
+            return;
+        }
+        setActiveServiceIndex(index);
     };
     const updateWhyComparisonInset = (event) => {
         const rect = event.currentTarget.getBoundingClientRect();
@@ -336,29 +384,18 @@ function Home() {
                             <p className="portfolio-hero-subtitle home-aurora-subtitle">
                                 {hero.subtitle}
                             </p>
-                            <div className="portfolio-hero-form home-aurora-form">
-                                <div className="portfolio-hero-field">
-                                    <span className="portfolio-hero-field-icon">BR</span>
-                                    <div>
-                                        <p className="portfolio-hero-field-title">{hero.focus.label}</p>
-                                        <p className="portfolio-hero-field-sub">
-                                            {hero.focus.value}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="portfolio-hero-field">
-                                    <span className="portfolio-hero-field-icon">DT</span>
-                                    <div>
-                                        <p className="portfolio-hero-field-title">{hero.launch.label}</p>
-                                        <p className="portfolio-hero-field-sub">
-                                            {hero.launch.value}
-                                        </p>
-                                    </div>
-                                </div>
+                            <div className="home-aurora-actions home-aurora-actions--desktop">
                                 <a className="portfolio-hero-cta home-aurora-cta" href="#contact">
                                     {hero.ctaLabel}
                                 </a>
                             </div>
+                        </div>
+                    }
+                    footerComponent={
+                        <div className="home-aurora-actions home-aurora-actions--mobile">
+                            <a className="portfolio-hero-cta home-aurora-cta" href="#contact">
+                                {hero.ctaLabel}
+                            </a>
                         </div>
                     }
                 >
@@ -635,7 +672,13 @@ function Home() {
                     </div>
 
                     {serviceItems.length ? (
-                        <div className="services-focus-shell reveal" onWheel={handleServiceWheel}>
+                        <div
+                            className="services-focus-shell reveal"
+                            onWheel={handleServiceWheel}
+                            onPointerDown={handleServiceSwipeStart}
+                            onPointerUp={handleServiceSwipeEnd}
+                            onPointerCancel={handleServiceSwipeCancel}
+                        >
                             <div className="services-focus-ambience" aria-hidden="true">
                                 <img src={activeService?.image} alt="" />
                             </div>
@@ -667,7 +710,7 @@ function Home() {
                                                 isActive ? 'is-active' : ''
                                             }`}
                                             type="button"
-                                            onClick={() => setActiveServiceIndex(index)}
+                                            onClick={() => handleServiceCardClick(index)}
                                             aria-label={item.title}
                                         >
                                             <img src={item.image} alt="" draggable="false" />

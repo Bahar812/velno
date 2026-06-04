@@ -1089,6 +1089,7 @@ body {
     background: rgba(255, 255, 255, 0.82);
     box-shadow: 0 34px 90px rgba(88, 28, 135, 0.13);
     backdrop-filter: blur(18px);
+    touch-action: pan-y;
 }
 
 .services-focus-ambience {
@@ -1122,6 +1123,8 @@ body {
     height: 635px;
     perspective: 1200px;
     transform-style: preserve-3d;
+    touch-action: pan-y;
+    user-select: none;
 }
 
 .services-focus-card {
@@ -1138,6 +1141,9 @@ body {
     color: #ffffff;
     box-shadow: 0 28px 70px rgba(88, 28, 135, 0.16);
     cursor: pointer;
+    touch-action: pan-y;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
     transform: translateX(-50%) translateZ(-180px) scale(0.84);
     opacity: 0.48;
     filter: brightness(0.86) saturate(0.9) blur(1px);
@@ -1469,6 +1475,14 @@ body {
     .services-focus-controls,
     .services-focus-action {
         width: 100%;
+    }
+
+    .services-focus-controls {
+        justify-content: center;
+    }
+
+    .services-focus-controls button {
+        flex: 1 1 0;
     }
 }
 
@@ -3411,6 +3425,10 @@ body {
     background: #eef2f6;
 }
 
+.container-scroll-footer {
+    display: none;
+}
+
 .home-scroll-copy {
     display: flex;
     flex-direction: column;
@@ -3918,6 +3936,16 @@ body {
     color: rgba(21, 19, 35, 0.58);
 }
 
+.home-aurora-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.home-aurora-actions--mobile {
+    display: none;
+}
+
 .home-aurora-cta {
     display: inline-flex;
     align-items: center;
@@ -4025,6 +4053,15 @@ body {
 
     .home-aurora-form {
         margin-top: 20px;
+    }
+
+    .home-aurora-actions {
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .home-aurora-actions--desktop .home-aurora-cta {
+        width: 100%;
     }
 }
 
@@ -5011,6 +5048,32 @@ body {
     .login-card {
         border-radius: 18px;
         padding: 22px 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-aurora-actions--desktop {
+        display: none;
+    }
+
+    .container-scroll-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 18px;
+    }
+
+    .home-aurora-actions--mobile {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 0;
+    }
+
+    .home-aurora-actions--mobile .home-aurora-cta {
+        width: min(220px, 78vw);
+        min-height: 46px;
+        padding: 0 24px;
+        border-radius: 12px;
     }
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
 
-export function ContainerScroll({ titleComponent, children, className = '' }) {
+export function ContainerScroll({ titleComponent, children, footerComponent, className = '' }) {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -45,6 +45,11 @@ export function ContainerScroll({ titleComponent, children, className = '' }) {
                 >
                     <div className="container-scroll-card-inner">{children}</div>
                 </motion.div>
+                {footerComponent ? (
+                    <div className="container-scroll-footer">
+                        {footerComponent}
+                    </div>
+                ) : null}
             </div>
         </div>
     );
