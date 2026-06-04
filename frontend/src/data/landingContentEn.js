@@ -81,24 +81,39 @@ export const englishLandingContent = {
     },
     services: {
         badge: 'Services',
-        title: 'Innovative Web & Software Development for Every Business',
+        title: 'Innovative Web & Software\nDevelopment for Every Business',
         description:
             'We create strong digital solutions to improve user experience and strengthen business performance.',
         items: [
             {
-                title: 'Custom Website Development',
+                title: 'Software Development',
                 detail:
-                    'We build dynamic and responsive websites tailored to your business goals. Elegant UI and user-friendly functionality create memorable first impressions and maximize conversion.',
+                    'Custom software for operations, digital products, dashboards, and business workflows that need measurable execution.',
             },
             {
-                title: 'AI Blog Generation for Better SEO',
+                title: 'Web Application Development',
                 detail:
-                    'Improve visibility and SEO performance with AI-generated blog content. Relevant, optimized articles help increase rankings and attract more traffic without extra overhead.',
+                    'Modern web applications that are responsive, fast, easy to use, and ready to scale with your business process.',
             },
             {
-                title: 'Software Solutions & Integrations',
+                title: 'Mobile App Development',
                 detail:
-                    'We create custom software that automates workflows and integrates with your existing systems. Your operations become more efficient without disrupting ongoing processes.',
+                    'Android and iOS mobile apps with polished user experience, stable performance, and strong backend integration.',
+            },
+            {
+                title: 'Infrastructure Solutions',
+                detail:
+                    'Server, cloud, deployment, monitoring, backup, and security planning so your digital system runs reliably.',
+            },
+            {
+                title: 'System Integration',
+                detail:
+                    'API, payment, CRM, ERP, WhatsApp, and internal system integration so your data and workflows stay connected.',
+            },
+            {
+                title: 'IT Support & Maintenance',
+                detail:
+                    'Technical support, ongoing maintenance, bug fixing, system updates, and performance optimization after launch.',
             },
         ],
     },
@@ -229,6 +244,59 @@ export const englishLandingContent = {
                     'Full Service & Maintenance 24/7',
                 ],
                 unavailable: [],
+            },
+        ],
+    },
+    testimonials: {
+        badge: 'Testimonials',
+        title: 'What clients say about Velno',
+        description:
+            'Stories from business owners and operations teams who trusted Velno with their websites and digital systems.',
+        items: [
+            {
+                text:
+                    'Our new website feels much more professional. Velno quickly understood our business needs and the result helped build trust with new customers.',
+                role: 'Operations Manager',
+            },
+            {
+                text:
+                    'The process was organized from planning to launch. They helped us shape the page structure, design, and content flow.',
+                role: 'IT Manager',
+            },
+            {
+                text:
+                    'Their support was responsive. Every revision was explained clearly, so the final stage felt easy to manage.',
+                role: 'Customer Support Lead',
+            },
+            {
+                text:
+                    'Velno built a website that looks sharp, loads fast, and feels comfortable to use on mobile.',
+                role: 'CEO',
+            },
+            {
+                text:
+                    'The AI blog and SEO guidance helped our team keep content active without adding heavy manual work.',
+                role: 'Project Manager',
+            },
+            {
+                text:
+                    'Implementation was fast and communication was clear. Our team could use the website without complicated training.',
+                role: 'Business Analyst',
+            },
+            {
+                text:
+                    'After the website refresh, our brand looked more credible when shared with potential partners and customers.',
+                role: 'Marketing Director',
+            },
+            {
+                text:
+                    'Velno did more than design. They helped us prioritize the features we actually needed.',
+                role: 'Sales Manager',
+            },
+            {
+                text:
+                    'Website performance improved and the customer contact flow became clearer. We felt it in the number of inquiries.',
+                role: 'E-commerce Manager',
             },
         ],
     },

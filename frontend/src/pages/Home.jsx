@@ -1,18 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+    ArrowUpRight,
     BarChart3,
+    Cable,
     CheckCircle2,
+    ChevronLeft,
+    ChevronRight,
+    Code2,
+    Globe2,
+    GripVertical,
     MessageCircle,
     PlugZap,
+    Server,
     ShieldCheck,
     Sliders,
     Smartphone,
     Sparkles,
+    Wrench,
     XCircle,
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import HowWeWork from '../components/HowWeWork';
+import ContainerScroll from '../components/ui/container-scroll-animation';
+import TestimonialsColumn from '../components/ui/testimonials-columns-1';
 import { useUi } from '../context/UiContext';
 import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
@@ -23,7 +34,14 @@ const iconMap = {
     BarChart3,
     Sliders,
     Smartphone,
+    Code2,
+    Globe2,
+    Server,
+    Cable,
+    Wrench,
 };
+
+const wrapIndex = (length, value) => ((value % length) + length) % length;
 
 const normalizeWhatsappNumber = (value) => `${value ?? ''}`.replace(/\D/g, '');
 const buildWhatsappLink = (value) => {
@@ -33,6 +51,10 @@ const buildWhatsappLink = (value) => {
 
 function Home() {
     const { language } = useUi();
+    const [whyComparisonInset, setWhyComparisonInset] = useState(52);
+    const [isWhyComparisonDragging, setIsWhyComparisonDragging] = useState(false);
+    const [activeServiceIndex, setActiveServiceIndex] = useState(0);
+    const serviceWheelLockRef = useRef(0);
     const content = useLocalizedLandingContent();
     const {
         hero,
@@ -44,17 +66,30 @@ function Home() {
         howWeWork,
         portfolio,
         pricing: pricingContent,
+        testimonials,
         contact,
     } = content;
-    const heroCards = hero?.collageImages?.length ? hero.collageImages : [];
-    const heroFloats = hero?.floats ?? [];
-    const heroFloatClasses = ['portfolio-hero-float--top', 'portfolio-hero-float--right'];
-    const heroCardClasses = [
-        'portfolio-hero-card portfolio-hero-card--tall',
-        'portfolio-hero-card',
-        'portfolio-hero-card',
-        'portfolio-hero-card portfolio-hero-card--wide',
-    ];
+    const heroImages = hero?.collageImages?.filter(Boolean) ?? [];
+    const heroPreviewImage =
+        heroImages[0] ??
+        'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1400&auto=format&fit=crop';
+    const heroSecondaryImage = heroImages[1] ?? heroPreviewImage;
+    const heroTertiaryImage = heroImages[2] ?? heroPreviewImage;
+    const whyBeforeImage =
+        whyWebsite?.beforeImage ??
+        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop';
+    const whyAfterImage =
+        whyWebsite?.afterImage ??
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1400&auto=format&fit=crop';
+    const heroStats = hero?.floats ?? [];
+    const serviceItems = services?.items?.filter(Boolean) ?? [];
+    const activeService = serviceItems.length
+        ? serviceItems[wrapIndex(serviceItems.length, activeServiceIndex)]
+        : null;
+    const testimonialItems = testimonials?.items?.filter(Boolean) ?? [];
+    const firstTestimonialsColumn = testimonialItems.slice(0, 3);
+    const secondTestimonialsColumn = testimonialItems.slice(3, 6);
+    const thirdTestimonialsColumn = testimonialItems.slice(6, 9);
     const homeText =
         language === 'id'
             ? {
@@ -66,6 +101,9 @@ function Home() {
                 freeRequest: 'Permintaan Gratis',
                 visitWebsite: 'Kunjungi Website',
                 includeLabel: 'Termasuk:',
+                profileLabels: ['Website', 'Branding', 'SEO', 'Sistem'],
+                serviceCount: 'Layanan',
+                serviceAction: 'Explore',
             }
             : {
                 happyClients: 'Happy Clients',
@@ -76,9 +114,63 @@ function Home() {
                 freeRequest: 'Free Request',
                 visitWebsite: 'Visit Website',
                 includeLabel: 'Include:',
+                profileLabels: ['Website', 'Branding', 'SEO', 'Systems'],
+                serviceCount: 'Services',
+                serviceAction: 'Explore',
             };
     const agentDesktopLink = buildWhatsappLink(vsWebsite?.agentDesktopNumber);
     const agentMobileLink = buildWhatsappLink(vsWebsite?.agentMobileNumber);
+    const vsGalleryImages = vsWebsite?.galleryImages?.filter(Boolean) ?? [];
+    const vsProfileImages = [
+        vsGalleryImages[0] ??
+            vsWebsite?.mainImage ??
+            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+        vsGalleryImages[1] ??
+            'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1000&auto=format&fit=crop',
+        vsGalleryImages[2] ??
+            vsWebsite?.miniCardImage ??
+            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop',
+        vsGalleryImages[3] ??
+            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
+    ];
+    const handleServiceWheel = (event) => {
+        if (serviceItems.length < 2) {
+            return;
+        }
+
+        const wheelDelta =
+            Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
+
+        if (Math.abs(wheelDelta) < 12) {
+            return;
+        }
+
+        const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+        if (now - serviceWheelLockRef.current < 260) {
+            return;
+        }
+
+        serviceWheelLockRef.current = now;
+        setActiveServiceIndex((value) => value + (wheelDelta > 0 ? 1 : -1));
+    };
+    const updateWhyComparisonInset = (event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const next = ((event.clientX - rect.left) / rect.width) * 100;
+        setWhyComparisonInset(Math.min(100, Math.max(0, next)));
+    };
+    const startWhyComparisonDrag = (event) => {
+        setIsWhyComparisonDragging(true);
+        updateWhyComparisonInset(event);
+        event.currentTarget.setPointerCapture?.(event.pointerId);
+    };
+    const moveWhyComparisonDrag = (event) => {
+        if (!isWhyComparisonDragging) return;
+        updateWhyComparisonInset(event);
+    };
+    const stopWhyComparisonDrag = (event) => {
+        setIsWhyComparisonDragging(false);
+        event.currentTarget.releasePointerCapture?.(event.pointerId);
+    };
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray('.reveal').forEach((node) => {
@@ -230,18 +322,21 @@ function Home() {
 
     return (
         <div>
-            <header id="home" className="portfolio-hero home-hero -mt-20 pt-20">
-                <section className="mx-auto max-w-6xl px-6 pb-20 pt-8">
-                    <div className="home-hero-grid grid grid-cols-[1.08fr_0.92fr] items-start gap-4 sm:items-center sm:gap-12">
-                        <div className="reveal home-hero-copy min-w-0">
-                            <span className="portfolio-hero-kicker">{hero.kicker}</span>
-                            <h1 className="home-hero-title font-display mt-5 text-4xl font-semibold leading-tight md:text-6xl">
+            <header id="home" className="home-aurora-hero -mt-20 pt-20">
+                <ContainerScroll
+                    className="home-aurora-scroll"
+                    titleComponent={
+                        <div className="reveal home-aurora-copy">
+                            <span className="portfolio-hero-kicker home-aurora-kicker">
+                                {hero.kicker}
+                            </span>
+                            <h1 className="home-aurora-title font-display">
                                 {hero.title}
                             </h1>
-                            <p className="portfolio-hero-subtitle home-hero-subtitle mt-5 max-w-xl text-base md:text-lg">
+                            <p className="portfolio-hero-subtitle home-aurora-subtitle">
                                 {hero.subtitle}
                             </p>
-                            <div className="portfolio-hero-form mt-8">
+                            <div className="portfolio-hero-form home-aurora-form">
                                 <div className="portfolio-hero-field">
                                     <span className="portfolio-hero-field-icon">BR</span>
                                     <div>
@@ -260,33 +355,55 @@ function Home() {
                                         </p>
                                     </div>
                                 </div>
-                                <button className="portfolio-hero-cta">{hero.ctaLabel}</button>
+                                <a className="portfolio-hero-cta home-aurora-cta" href="#contact">
+                                    {hero.ctaLabel}
+                                </a>
                             </div>
                         </div>
-                        <div className="reveal home-hero-media min-w-0">
-                            <div className="portfolio-hero-collage">
-                                {heroFloats.map((item, index) => (
-                                    <div
-                                        key={`${item.title}-${index}`}
-                                        className={`portfolio-hero-float ${heroFloatClasses[index] ?? ''}`}
-                                    >
-                                        <strong>{item.title}</strong>
-                                        {item.text}
+                    }
+                >
+                    <div className="home-scroll-preview home-aurora-scroll-preview">
+                        <div className="home-scroll-browser">
+                            <div className="home-scroll-browser-bar">
+                                <div className="home-scroll-browser-dots">
+                                    <span />
+                                    <span />
+                                    <span />
+                                </div>
+                                <div className="home-scroll-address">velno.cloud/studio</div>
+                            </div>
+                            <div className="home-scroll-screen">
+                                <div
+                                    className="home-scroll-feature-image"
+                                    style={{ backgroundImage: `url(${heroPreviewImage})` }}
+                                >
+                                    <div className="home-scroll-feature-overlay">
+                                        <span>{hero.kicker}</span>
+                                        <strong>{hero.title}</strong>
                                     </div>
-                                ))}
-                                {heroCards.map((image, index) => (
-                                    <div
-                                        key={`${image}-${index}`}
-                                        className={heroCardClasses[index] ?? 'portfolio-hero-card'}
-                                        style={{
-                                            backgroundImage: image ? `url(${image})` : 'none',
-                                        }}
-                                    />
-                                ))}
+                                </div>
+                                <div className="home-scroll-side">
+                                    {heroStats.slice(0, 2).map((item, index) => (
+                                        <div key={`${item.title}-${index}`} className="home-scroll-stat">
+                                            <strong>{item.title}</strong>
+                                            <span>{item.text}</span>
+                                        </div>
+                                    ))}
+                                    <div className="home-scroll-stack">
+                                        <div
+                                            className="home-scroll-thumb"
+                                            style={{ backgroundImage: `url(${heroSecondaryImage})` }}
+                                        />
+                                        <div
+                                            className="home-scroll-thumb"
+                                            style={{ backgroundImage: `url(${heroTertiaryImage})` }}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </ContainerScroll>
             </header>
 
             <section id="about" className="section-white py-20 gsap-zoom-in">
@@ -305,192 +422,301 @@ function Home() {
                 </div>
             </section>
 
-            <section id="why-website" className="section-purple-strong py-24 gsap-zoom-in">
+            <section id="why-website" className="why-website-section py-24 gsap-zoom-in">
                 <div className="mx-auto max-w-6xl px-6">
-                    <div className="reveal space-y-5 text-white">
+                    <div className="why-website-heading reveal">
                         <span className="badge">{whyWebsite.badge}</span>
-                        <h2 className="font-display text-4xl font-semibold md:text-5xl">
+                        <h2 className="font-display">
                             {whyWebsite.title}
                         </h2>
-                        <p className="max-w-3xl text-base text-white/70 md:text-lg">
+                        <p>
                             {whyWebsite.description}
                         </p>
                     </div>
-                    <div className="mt-10 grid gap-5 sm:grid-cols-2">
-                        {whyWebsite.cards.map((item) => (
-                            <div key={item.title} className="panel reason-card reveal">
-                                <p className="reason-stat">{item.stat}</p>
-                                <h3 className="text-sm font-semibold">{item.title}</h3>
-                                <p className="text-xs text-white/60">{item.detail}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <section id="vs-website" className="section-white py-24">
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="vs-modern">
-                        <div className="vs-modern-left reveal gsap-slide-left">
-                            <span className="vs-pill">{vsWebsite.pill}</span>
-                            <h2 className="font-display mt-4 text-3xl font-semibold md:text-4xl">
-                                {vsWebsite.title.split('\n').map((line, index, lines) => (
-                                    <React.Fragment key={`${line}-${index}`}>
-                                        {line}
-                                        {index < lines.length - 1 ? <br /> : null}
-                                    </React.Fragment>
-                                ))}
-                            </h2>
-                            {vsWebsite.paragraphs.filter(Boolean).map((text, index) => (
-                                <p
-                                    key={`${text}-${index}`}
-                                    className={index === 0 ? 'mt-4 text-white/70' : 'text-white/70'}
-                                >
-                                    {text}
-                                </p>
+                    <div className="why-comparison-grid">
+                        <div className="why-education-list reveal">
+                            {whyWebsite.cards.map((item, index) => (
+                                <article key={item.title} className="why-lesson-card">
+                                    <span className="why-lesson-index">
+                                        {String(index + 1).padStart(2, '0')}
+                                    </span>
+                                    <div>
+                                        <strong>{item.stat}</strong>
+                                        <h3>{item.title}</h3>
+                                        <p>{item.detail}</p>
+                                    </div>
+                                </article>
                             ))}
-                            <p className="vs-label">{vsWebsite.label}</p>
-                            <div className="vs-actions vs-actions--desktop">
-                                {agentDesktopLink ? (
-                                    <a
-                                        className="vs-btn vs-btn--secondary"
-                                        href={agentDesktopLink}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        <span className="vs-btn-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 32 32" role="presentation">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M19.11 17.41c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.66.15-.2.29-.76.94-.94 1.13-.17.2-.35.22-.64.07-.29-.15-1.24-.45-2.36-1.45-.87-.77-1.46-1.72-1.63-2.01-.17-.29-.02-.44.13-.59.13-.13.29-.35.44-.52.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.59-.9-2.18-.24-.58-.49-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.29-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.23 5.12 4.53.72.31 1.28.49 1.72.63.72.23 1.37.2 1.89.12.58-.09 1.71-.7 1.95-1.37.24-.67.24-1.24.17-1.37-.07-.12-.27-.2-.56-.35ZM16 5.33c-5.9 0-10.69 4.79-10.69 10.69 0 1.88.49 3.66 1.35 5.23L5.33 26.67l5.58-1.29c1.5.82 3.21 1.28 5.09 1.28 5.9 0 10.69-4.79 10.69-10.69S21.9 5.33 16 5.33Zm0 19.44c-1.69 0-3.26-.48-4.6-1.31l-.33-.2-3.31.77.9-3.22-.21-.34c-.85-1.36-1.35-2.96-1.35-4.7 0-4.79 3.9-8.69 8.69-8.69s8.69 3.9 8.69 8.69-3.9 8.69-8.69 8.69Z"
-                                                />
-                                            </svg>
-                                        </span>
-                                        {vsWebsite.agentDesktop}
-                                    </a>
-                                ) : (
-                                    <button className="vs-btn vs-btn--secondary" type="button">
-                                        <span className="vs-btn-icon" aria-hidden="true">
-                                            <svg viewBox="0 0 32 32" role="presentation">
-                                                <path
-                                                    fill="currentColor"
-                                                    d="M19.11 17.41c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.66.15-.2.29-.76.94-.94 1.13-.17.2-.35.22-.64.07-.29-.15-1.24-.45-2.36-1.45-.87-.77-1.46-1.72-1.63-2.01-.17-.29-.02-.44.13-.59.13-.13.29-.35.44-.52.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.59-.9-2.18-.24-.58-.49-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.29-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.23 5.12 4.53.72.31 1.28.49 1.72.63.72.23 1.37.2 1.89.12.58-.09 1.71-.7 1.95-1.37.24-.67.24-1.24.17-1.37-.07-.12-.27-.2-.56-.35ZM16 5.33c-5.9 0-10.69 4.79-10.69 10.69 0 1.88.49 3.66 1.35 5.23L5.33 26.67l5.58-1.29c1.5.82 3.21 1.28 5.09 1.28 5.9 0 10.69-4.79 10.69-10.69S21.9 5.33 16 5.33Zm0 19.44c-1.69 0-3.26-.48-4.6-1.31l-.33-.2-3.31.77.9-3.22-.21-.34c-.85-1.36-1.35-2.96-1.35-4.7 0-4.79 3.9-8.69 8.69-8.69s8.69 3.9 8.69 8.69-3.9 8.69-8.69 8.69Z"
-                                                />
-                                            </svg>
-                                        </span>
-                                        {vsWebsite.agentDesktop}
-                                    </button>
-                                )}
-                            </div>
                         </div>
-                        <div className="vs-modern-right reveal gsap-slide-right">
-                            <div className="vs-showcase">
-                                <div className="vs-browser">
-                                    <div className="vs-browser-bar">
+                        <div
+                            className="why-comparison-frame reveal"
+                            style={{ '--why-inset': `${whyComparisonInset}%` }}
+                            onPointerDown={startWhyComparisonDrag}
+                            onPointerMove={moveWhyComparisonDrag}
+                            onPointerUp={stopWhyComparisonDrag}
+                            onPointerCancel={stopWhyComparisonDrag}
+                            onPointerLeave={() => setIsWhyComparisonDragging(false)}
+                            role="presentation"
+                        >
+                            <div className="why-comparison-panel why-comparison-panel--before">
+                                <div className="why-browser">
+                                    <div className="why-browser-top">
                                         <span />
                                         <span />
                                         <span />
                                     </div>
-                                    <div
-                                        className="vs-browser-screen vs-browser-screen--main"
-                                        style={{
-                                            '--vs-main-image': vsWebsite.mainImage
-                                                ? `url(${vsWebsite.mainImage})`
-                                                : undefined,
-                                        }}
-                                    />
-                                </div>
-                                <div className="vs-float-card vs-float-card--left">
-                                    <strong>120+</strong>
-                                    {homeText.happyClients}
-                                </div>
-                                <div className="vs-float-card vs-float-card--right">
-                                    <strong>{homeText.modernDesignTitle}</strong>
-                                    {homeText.modernDesignBody}
-                                </div>
-                                <div className="vs-float-card vs-float-card--bottom">
-                                    <strong>{homeText.quickConsultTitle}</strong>
-                                    {homeText.quickConsultBody}
-                                </div>
-                                <div
-                                    className="vs-mini-card vs-mini-card--a"
-                                    style={{
-                                        '--vs-mini-image': vsWebsite.miniCardImage
-                                            ? `url(${vsWebsite.miniCardImage})`
-                                            : undefined,
-                                    }}
-                                >
-                                    <span>{homeText.freeRequest}</span>
+                                    <div className="why-person-visual why-person-visual--sad">
+                                        <img
+                                            src={whyBeforeImage}
+                                            alt="Ilustrasi bisnis tanpa website terlihat kurang siap online"
+                                            draggable="false"
+                                        />
+                                    </div>
+                                    <div className="why-before-content">
+                                        <div className="why-copy-stack">
+                                            <span className="why-status-pill why-status-pill--muted">
+                                                Tanpa Website
+                                            </span>
+                                            <h3>Calon pelanggan ragu sebelum bertanya.</h3>
+                                            <p>
+                                                Informasi tersebar di chat dan media sosial, sulit ditemukan di Google,
+                                                dan kepercayaan harus dibangun dari nol setiap kali ada calon klien baru.
+                                            </p>
+                                            <div className="why-friction-list">
+                                                <span>Tidak muncul saat dicari</span>
+                                                <span>Portofolio sulit dibuktikan</span>
+                                                <span>Tim menjawab pertanyaan berulang</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="vs-actions vs-actions--mobile">
-                            {agentMobileLink ? (
-                                <a
-                                    className="vs-btn vs-btn--secondary"
-                                    href={agentMobileLink}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    <span className="vs-btn-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 32 32" role="presentation">
-                                            <path
-                                                fill="currentColor"
-                                                d="M19.11 17.41c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.66.15-.2.29-.76.94-.94 1.13-.17.2-.35.22-.64.07-.29-.15-1.24-.45-2.36-1.45-.87-.77-1.46-1.72-1.63-2.01-.17-.29-.02-.44.13-.59.13-.13.29-.35.44-.52.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.59-.9-2.18-.24-.58-.49-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.29-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.23 5.12 4.53.72.31 1.28.49 1.72.63.72.23 1.37.2 1.89.12.58-.09 1.71-.7 1.95-1.37.24-.67.24-1.24.17-1.37-.07-.12-.27-.2-.56-.35ZM16 5.33c-5.9 0-10.69 4.79-10.69 10.69 0 1.88.49 3.66 1.35 5.23L5.33 26.67l5.58-1.29c1.5.82 3.21 1.28 5.09 1.28 5.9 0 10.69-4.79 10.69-10.69S21.9 5.33 16 5.33Zm0 19.44c-1.69 0-3.26-.48-4.6-1.31l-.33-.2-3.31.77.9-3.22-.21-.34c-.85-1.36-1.35-2.96-1.35-4.7 0-4.79 3.9-8.69 8.69-8.69s8.69 3.9 8.69 8.69-3.9 8.69-8.69 8.69Z"
-                                            />
-                                        </svg>
-                                    </span>
-                                    {vsWebsite.agentMobile}
-                                </a>
-                            ) : (
-                                <button className="vs-btn vs-btn--secondary" type="button">
-                                    <span className="vs-btn-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 32 32" role="presentation">
-                                            <path
-                                                fill="currentColor"
-                                                d="M19.11 17.41c-.29-.15-1.71-.84-1.98-.94-.27-.1-.47-.15-.66.15-.2.29-.76.94-.94 1.13-.17.2-.35.22-.64.07-.29-.15-1.24-.45-2.36-1.45-.87-.77-1.46-1.72-1.63-2.01-.17-.29-.02-.44.13-.59.13-.13.29-.35.44-.52.15-.17.2-.29.29-.49.1-.2.05-.37-.02-.52-.07-.15-.66-1.59-.9-2.18-.24-.58-.49-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.29-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.23 5.12 4.53.72.31 1.28.49 1.72.63.72.23 1.37.2 1.89.12.58-.09 1.71-.7 1.95-1.37.24-.67.24-1.24.17-1.37-.07-.12-.27-.2-.56-.35ZM16 5.33c-5.9 0-10.69 4.79-10.69 10.69 0 1.88.49 3.66 1.35 5.23L5.33 26.67l5.58-1.29c1.5.82 3.21 1.28 5.09 1.28 5.9 0 10.69-4.79 10.69-10.69S21.9 5.33 16 5.33Zm0 19.44c-1.69 0-3.26-.48-4.6-1.31l-.33-.2-3.31.77.9-3.22-.21-.34c-.85-1.36-1.35-2.96-1.35-4.7 0-4.79 3.9-8.69 8.69-8.69s8.69 3.9 8.69 8.69-3.9 8.69-8.69 8.69Z"
-                                            />
-                                        </svg>
-                                    </span>
-                                    {vsWebsite.agentMobile}
+                            <div className="why-comparison-panel why-comparison-panel--after">
+                                <div className="why-browser why-browser--after">
+                                    <div className="why-browser-top">
+                                        <span />
+                                        <span />
+                                        <span />
+                                    </div>
+                                    <div className="why-person-visual why-person-visual--happy">
+                                        <img
+                                            src={whyAfterImage}
+                                            alt="Ilustrasi bisnis dengan website dan dashboard digital"
+                                            draggable="false"
+                                        />
+                                    </div>
+                                    <div className="why-after-content">
+                                        <div className="why-copy-stack">
+                                            <span className="why-status-pill">
+                                                Dengan Website
+                                            </span>
+                                            <h3>Bisnis terlihat siap, jelas, dan mudah dipercaya.</h3>
+                                            <p>
+                                                Website menjadi pusat informasi 24/7: layanan, bukti kerja, testimoni,
+                                                dan CTA tertata sehingga calon klien paham alasan harus menghubungi Anda.
+                                            </p>
+                                            <div className="why-signal-grid">
+                                                <div>
+                                                    <strong>24/7</strong>
+                                                    <span>akses informasi</span>
+                                                </div>
+                                                <div>
+                                                    <strong>SEO</strong>
+                                                    <span>ditemukan Google</span>
+                                                </div>
+                                                <div>
+                                                    <strong>CTA</strong>
+                                                    <span>arah kontak jelas</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="why-comparison-divider">
+                                <button type="button" aria-label="Geser perbandingan website">
+                                    <GripVertical size={18} strokeWidth={2.4} />
                                 </button>
-                            )}
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section id="services" className="section-purple-strong py-24 gsap-zoom-in">
+            <section id="vs-website" className="vs-profile-section py-24">
                 <div className="mx-auto max-w-6xl px-6">
-                    <div className="reveal flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <span className="badge">{services.badge}</span>
-                            <h2 className="font-display mt-4 text-3xl font-semibold text-white md:text-4xl">
-                                {services.title}
+                    <div className="vs-profile">
+                        <div className="vs-profile-copy reveal gsap-slide-left">
+                            <span className="vs-profile-kicker">{vsWebsite.pill}</span>
+                            <h2 className="vs-profile-title font-display">
+                                {vsWebsite.title.split('\n').map((line, index, lines) => (
+                                    <span className="vs-profile-title-line" key={`${line}-${index}`}>
+                                        {line}
+                                        {index < lines.length - 1 ? <br /> : null}
+                                    </span>
+                                ))}
                             </h2>
-                        </div>
-                        <p className="max-w-xl text-white/70">
-                            {services.description}
-                        </p>
-                    </div>
-                    <div className="mt-10 grid gap-6 md:grid-cols-3">
-                        {services.items.map((item) => {
-                            const FeatureIcon = iconMap[item.icon] ?? PlugZap;
-                            return (
-                            <div key={item.title} className="feature-tile reveal">
-                                <div className="tile-icon">
-                                    <FeatureIcon size={18} strokeWidth={2} />
-                                </div>
-                                <h3 className="mt-6 text-lg font-semibold">{item.title}</h3>
-                                <p className="mt-3 text-sm text-white/70">{item.detail}</p>
-                                <div
-                                    className={`tile-visual tile-${item.type}`}
-                                    style={{ backgroundImage: `url(${item.image})` }}
-                                />
+                            <div className="vs-profile-body">
+                                {vsWebsite.paragraphs.filter(Boolean).map((text, index) => (
+                                    <p key={`${text}-${index}`}>{text}</p>
+                                ))}
                             </div>
-                            );
-                        })}
+                            <div className="vs-profile-cta">
+                                <p>{vsWebsite.label}</p>
+                                <div className="vs-profile-buttons">
+                                    {agentDesktopLink ? (
+                                        <a
+                                            className="vs-profile-button vs-profile-button--primary"
+                                            href={agentDesktopLink}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            <MessageCircle size={17} strokeWidth={2.4} />
+                                            {vsWebsite.agentDesktop}
+                                        </a>
+                                    ) : (
+                                        <button
+                                            className="vs-profile-button vs-profile-button--primary"
+                                            type="button"
+                                        >
+                                            <MessageCircle size={17} strokeWidth={2.4} />
+                                            {vsWebsite.agentDesktop}
+                                        </button>
+                                    )}
+                                    {agentMobileLink ? (
+                                        <a
+                                            className="vs-profile-button vs-profile-button--secondary"
+                                            href={agentMobileLink}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            <MessageCircle size={17} strokeWidth={2.4} />
+                                            {vsWebsite.agentMobile}
+                                        </a>
+                                    ) : (
+                                        <button
+                                            className="vs-profile-button vs-profile-button--secondary"
+                                            type="button"
+                                        >
+                                            <MessageCircle size={17} strokeWidth={2.4} />
+                                            {vsWebsite.agentMobile}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="vs-profile-gallery reveal gsap-slide-right">
+                            {vsProfileImages.map((image, index) => (
+                                <figure
+                                    key={`${image}-${index}`}
+                                    className={`vs-profile-image vs-profile-image--${index + 1}`}
+                                >
+                                    <img
+                                        src={image}
+                                        alt={`${homeText.profileLabels[index]} Velno`}
+                                        draggable="false"
+                                    />
+                                    <figcaption>{homeText.profileLabels[index]}</figcaption>
+                                </figure>
+                            ))}
+                        </div>
                     </div>
+                </div>
+            </section>
+
+            <section id="services" className="services-focus-section py-24 gsap-zoom-in">
+                <div className="mx-auto max-w-6xl px-6">
+                    <div className="reveal services-focus-heading">
+                        <span className="services-focus-kicker">{services.badge}</span>
+                        <h2 className="services-focus-title font-display">
+                            {services.title}
+                        </h2>
+                        <p>{services.description}</p>
+                    </div>
+
+                    {serviceItems.length ? (
+                        <div className="services-focus-shell reveal" onWheel={handleServiceWheel}>
+                            <div className="services-focus-ambience" aria-hidden="true">
+                                <img src={activeService?.image} alt="" />
+                            </div>
+                            <div className="services-focus-rail" aria-label={services.title}>
+                                {serviceItems.map((item, index) => {
+                                    const normalizedActive = wrapIndex(
+                                        serviceItems.length,
+                                        activeServiceIndex
+                                    );
+                                    let offset = index - normalizedActive;
+                                    if (offset > serviceItems.length / 2) {
+                                        offset -= serviceItems.length;
+                                    }
+                                    if (offset < -serviceItems.length / 2) {
+                                        offset += serviceItems.length;
+                                    }
+                                    const isActive = offset === 0;
+                                    const clampedOffset = Math.max(-3, Math.min(3, offset));
+                                    const offsetClass =
+                                        clampedOffset < 0
+                                            ? `offset-neg-${Math.abs(clampedOffset)}`
+                                            : `offset-${clampedOffset}`;
+                                    const ServiceIcon = iconMap[item.icon] ?? PlugZap;
+
+                                    return (
+                                        <button
+                                            key={item.title}
+                                            className={`services-focus-card ${offsetClass} ${
+                                                isActive ? 'is-active' : ''
+                                            }`}
+                                            type="button"
+                                            onClick={() => setActiveServiceIndex(index)}
+                                            aria-label={item.title}
+                                        >
+                                            <img src={item.image} alt="" draggable="false" />
+                                            <span className="services-focus-card-shade" />
+                                            <span className="services-focus-card-icon">
+                                                <ServiceIcon size={18} strokeWidth={2.3} />
+                                            </span>
+                                            <span className="services-focus-card-title">
+                                                {item.title}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="services-focus-info">
+                                <div className="services-focus-copy">
+                                    <span>
+                                        {wrapIndex(serviceItems.length, activeServiceIndex) + 1} /{' '}
+                                        {serviceItems.length} {homeText.serviceCount}
+                                    </span>
+                                    <h3>{activeService?.title}</h3>
+                                    <p>{activeService?.detail}</p>
+                                </div>
+                                <div className="services-focus-actions">
+                                    <div className="services-focus-controls">
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveServiceIndex((value) => value - 1)}
+                                            aria-label="Layanan sebelumnya"
+                                        >
+                                            <ChevronLeft size={20} strokeWidth={2.4} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => setActiveServiceIndex((value) => value + 1)}
+                                            aria-label="Layanan berikutnya"
+                                        >
+                                            <ChevronRight size={20} strokeWidth={2.4} />
+                                        </button>
+                                    </div>
+                                    <a className="services-focus-action" href="#contact">
+                                        {homeText.serviceAction}
+                                        <ArrowUpRight size={16} strokeWidth={2.5} />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
                 </div>
             </section>
 
@@ -704,6 +930,36 @@ function Home() {
                     </div>
                 </div>
             </section>
+
+            {testimonialItems.length ? (
+                <section id="testimonials" className="testimonials-section py-24">
+                    <div className="mx-auto max-w-6xl px-6">
+                        <div className="reveal testimonials-heading">
+                            <span className="badge">{testimonials.badge}</span>
+                            <h2 className="font-display mt-5 text-3xl font-semibold md:text-5xl">
+                                {testimonials.title}
+                            </h2>
+                            <p>{testimonials.description}</p>
+                        </div>
+                        <div className="testimonials-columns-wrap">
+                            <TestimonialsColumn
+                                testimonials={firstTestimonialsColumn}
+                                duration={15}
+                            />
+                            <TestimonialsColumn
+                                testimonials={secondTestimonialsColumn}
+                                className="testimonials-column--middle"
+                                duration={19}
+                            />
+                            <TestimonialsColumn
+                                testimonials={thirdTestimonialsColumn}
+                                className="testimonials-column--last"
+                                duration={17}
+                            />
+                        </div>
+                    </div>
+                </section>
+            ) : null}
 
             <section id="contact" className="py-24">
                 <div className="mx-auto max-w-6xl px-6">

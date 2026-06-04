@@ -30,22 +30,22 @@ function Footer() {
         { label: language === 'id' ? 'Kontak' : 'Contact', href: '#contact' },
     ];
     return (
-        <footer className="border-t border-white/10 py-12">
-            <div className="mx-auto grid max-w-6xl gap-10 px-6 md:grid-cols-[1.4fr_1fr_1fr]">
+        <footer className="border-t border-white/10 py-10 sm:py-12">
+            <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 md:grid-cols-[1.4fr_1fr_1fr] md:gap-10">
                 <div className="space-y-4 text-sm text-white/60">
-                    <div className="flex items-center gap-3 text-lg font-semibold text-white">
+                    <div className="flex min-w-0 items-center gap-3 text-base font-semibold text-white sm:text-lg">
                         {logoImage ? (
                             <img
                                 src={logoImage}
                                 alt={logoText || 'Logo'}
-                                className="h-12 w-auto max-w-[220px] object-contain sm:h-14 sm:max-w-[260px] md:h-16 md:max-w-none"
+                                className="h-10 w-auto max-w-[180px] object-contain sm:h-14 sm:max-w-[260px] md:h-16 md:max-w-none"
                             />
                         ) : (
                             <>
                                 <span className="h-10 w-10 rounded-xl bg-white/10 text-center text-2xl font-bold leading-10 text-white">
                                     {logoInitials}
                                 </span>
-                                {logoText ? <span>{logoText}</span> : null}
+                                {logoText ? <span className="min-w-0 truncate">{logoText}</span> : null}
                             </>
                         )}
                     </div>
@@ -71,7 +71,7 @@ function Footer() {
                     </div>
                 </div>
             </div>
-            <div className="mx-auto mt-10 max-w-6xl px-6 text-xs uppercase tracking-[0.3em] text-white/30">
+            <div className="mx-auto mt-8 max-w-6xl px-4 text-[10px] uppercase tracking-[0.18em] text-white/30 sm:px-6 sm:text-xs sm:tracking-[0.3em]">
                 {copyright}
             </div>
         </footer>

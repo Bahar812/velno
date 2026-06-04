@@ -17,6 +17,11 @@ const iconOptions = [
     { value: 'BarChart3', label: 'BarChart3' },
     { value: 'Sliders', label: 'Sliders' },
     { value: 'Smartphone', label: 'Smartphone' },
+    { value: 'Code2', label: 'Code2' },
+    { value: 'Globe2', label: 'Globe2' },
+    { value: 'Server', label: 'Server' },
+    { value: 'Cable', label: 'Cable' },
+    { value: 'Wrench', label: 'Wrench' },
 ];
 
 const cloneContent = (value) => {
@@ -605,6 +610,18 @@ function Dashboard() {
                             onChange={(value) => updateByPath(['whyWebsite', 'description'], value)}
                         />
                     </div>
+                    <div className="dashboard-grid">
+                        <ImageField
+                            label="Gambar Tanpa Website"
+                            value={formData.whyWebsite.beforeImage}
+                            onChange={(value) => updateByPath(['whyWebsite', 'beforeImage'], value)}
+                        />
+                        <ImageField
+                            label="Gambar Dengan Website"
+                            value={formData.whyWebsite.afterImage}
+                            onChange={(value) => updateByPath(['whyWebsite', 'afterImage'], value)}
+                        />
+                    </div>
                     <div className="dashboard-list">
                         <div className="dashboard-list-header">
                             <h3>Card</h3>
@@ -785,9 +802,9 @@ function Dashboard() {
                                     addArrayItem(['services', 'items'], {
                                         title: 'Judul',
                                         detail: 'Deskripsi',
-                                        type: 'integrations',
+                                        type: 'software',
                                         image: '',
-                                        icon: 'PlugZap',
+                                        icon: 'Code2',
                                     })
                                 }
                             >
@@ -832,6 +849,12 @@ function Dashboard() {
                                             { value: 'integrations', label: 'Integrations' },
                                             { value: 'auth', label: 'Auth' },
                                             { value: 'voice', label: 'Voice' },
+                                            { value: 'software', label: 'Software' },
+                                            { value: 'web', label: 'Web' },
+                                            { value: 'mobile', label: 'Mobile' },
+                                            { value: 'infrastructure', label: 'Infrastructure' },
+                                            { value: 'integration', label: 'Integration' },
+                                            { value: 'support', label: 'Support' },
                                         ]}
                                     />
                                     <SelectField

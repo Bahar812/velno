@@ -48,6 +48,10 @@ export const defaultLandingContent = {
         title: 'Kenapa Bisnismu Butuh Website?',
         description:
             'Website bukan hanya sekadar alat pemasaran, tetapi juga mesin penghasil leads tanpa batas yang dapat menjangkau audiens global, 24/7. Ini adalah simbol kepercayaan yang tidak pernah tidur. Dengan website, bisnis Anda selalu terlihat profesional dan kredibel, siap untuk memikat pelanggan baru kapan saja.',
+        beforeImage:
+            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop',
+        afterImage:
+            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1400&auto=format&fit=crop',
         cards: [
             {
                 stat: '82%',
@@ -77,7 +81,7 @@ export const defaultLandingContent = {
     },
     vsWebsite: {
         pill: 'Sudah Saatnya',
-        title: 'Bisnis Kamu Punya\nWebsite Berkelas',
+        title: 'Bisnis Kamu\nPunya Website\nBerkelas',
         paragraphs: [
             'Kami menyediakan jasa pembuatan website profesional dengan harga terjangkau. Website siap pakai, mudah digunakan, dan sudah teroptimasi SEO agar konversi lebih tinggi.',
             'Bukan hanya website, kami juga bantu iklan, branding, hingga pengelolaan media sosial sesuai kebutuhan bisnismu.',
@@ -91,6 +95,12 @@ export const defaultLandingContent = {
             'https://images.unsplash.com/photo-1758876019673-704b039d405c?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=1600',
         miniCardImage:
             'https://images.unsplash.com/photo-1749476696569-ef3c55a77244?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=1200',
+        galleryImages: [
+            'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
+        ],
     },
     whatsapp: {
         floatLabel: 'Yuk konsultasi bisnismu',
@@ -98,33 +108,57 @@ export const defaultLandingContent = {
     },
     services: {
         badge: 'Layanan',
-        title: 'Pengembangan Web & Perangkat Lunak Inovatif untuk Setiap Bisnis',
+        title: 'Pengembangan Web & Perangkat Lunak\nInovatif untuk Setiap Bisnis',
         description:
             'Menciptakan solusi digital yang kuat untuk meningkatkan pengalaman pengguna dan memperkuat performa bisnis Anda.',
         items: [
             {
-                title: 'Pengembangan Website Kustom',
+                title: 'Software Development',
                 detail:
-                    'Kami membangun website dinamis dan responsif yang disesuaikan dengan kebutuhan bisnis Anda. Dengan desain UI yang elegan dan fungsionalitas yang ramah pengguna, website Anda akan memberikan kesan pertama yang tak terlupakan dan memaksimalkan konversi.',
-                type: 'integrations',
-                image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=900&auto=format&fit=crop',
-                icon: 'PlugZap',
+                    'Pengembangan perangkat lunak kustom untuk operasional, produk digital, dashboard, dan kebutuhan bisnis yang membutuhkan alur kerja terukur.',
+                type: 'software',
+                image: 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Code2',
             },
             {
-                title: 'AI Generate Blog untuk SEO Maksimal',
+                title: 'Web Application Development',
                 detail:
-                    'Tingkatkan visibilitas dan performa SEO website Anda dengan AI Generate Blog. Konten berkualitas yang dihasilkan otomatis, relevan dengan audiens Anda, dan teroptimasi untuk mesin pencari. Dapatkan artikel berkala yang mendukung peringkat website Anda dan menarik lebih banyak trafik tanpa repot.',
-                type: 'auth',
-                image: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=900&auto=format&fit=crop',
-                icon: 'ShieldCheck',
+                    'Aplikasi web modern yang responsif, cepat, mudah digunakan, dan siap berkembang mengikuti proses bisnis Anda.',
+                type: 'web',
+                image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Globe2',
             },
             {
-                title: 'Solusi & Integrasi Perangkat Lunak',
+                title: 'Mobile App Development',
                 detail:
-                    'Kami menciptakan perangkat lunak kustom yang mengotomatisasi alur kerja dan terintegrasi dengan sistem yang sudah ada. Solusi kami membantu bisnis untuk menjadi lebih efisien dan mengoptimalkan setiap proses, tanpa mengganggu alur yang telah berjalan.',
-                type: 'voice',
-                image: 'https://images.unsplash.com/photo-1454165205744-3b78555e5572?q=80&w=900&auto=format&fit=crop',
-                icon: 'Sparkles',
+                    'Aplikasi mobile untuk Android dan iOS dengan pengalaman pengguna yang rapi, performa stabil, dan integrasi backend yang kuat.',
+                type: 'mobile',
+                image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Smartphone',
+            },
+            {
+                title: 'Infrastructure Solutions',
+                detail:
+                    'Perencanaan server, cloud, deployment, monitoring, backup, dan keamanan agar sistem digital bisnis berjalan andal.',
+                type: 'infrastructure',
+                image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Server',
+            },
+            {
+                title: 'System Integration',
+                detail:
+                    'Integrasi API, pembayaran, CRM, ERP, WhatsApp, dan sistem internal agar data serta proses bisnis saling terhubung.',
+                type: 'integration',
+                image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Cable',
+            },
+            {
+                title: 'IT Support & Maintenance',
+                detail:
+                    'Dukungan teknis, pemeliharaan berkala, perbaikan bug, pembaruan sistem, dan optimasi performa setelah produk berjalan.',
+                type: 'support',
+                image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1000&auto=format&fit=crop',
+                icon: 'Wrench',
             },
         ],
     },
@@ -289,6 +323,77 @@ export const defaultLandingContent = {
                     'Layanan Penuh & Pemeliharaan 24/7',
                 ],
                 unavailable: [],
+            },
+        ],
+    },
+    testimonials: {
+        badge: 'Testimoni',
+        title: 'Apa kata klien Velno',
+        description:
+            'Cerita dari pemilik bisnis dan tim operasional yang mempercayakan website serta sistem digitalnya kepada Velno.',
+        items: [
+            {
+                text:
+                    'Website baru kami terasa jauh lebih profesional. Tim Velno cepat memahami kebutuhan bisnis dan hasilnya langsung membantu meningkatkan kepercayaan calon pelanggan.',
+                image: 'https://randomuser.me/api/portraits/women/1.jpg',
+                name: 'Briana Patton',
+                role: 'Operations Manager',
+            },
+            {
+                text:
+                    'Proses pengerjaan rapi dari awal sampai rilis. Kami dibantu memilih struktur halaman, desain, dan alur konten yang lebih mudah dipahami pelanggan.',
+                image: 'https://randomuser.me/api/portraits/men/2.jpg',
+                name: 'Bilal Ahmed',
+                role: 'IT Manager',
+            },
+            {
+                text:
+                    'Support-nya responsif. Setiap revisi dijelaskan dengan jelas, jadi kami tidak merasa bingung saat website masuk tahap final.',
+                image: 'https://randomuser.me/api/portraits/women/3.jpg',
+                name: 'Saman Malik',
+                role: 'Customer Support Lead',
+            },
+            {
+                text:
+                    'Velno membuat website yang bukan hanya bagus dilihat, tapi juga terasa ringan dan nyaman digunakan di mobile.',
+                image: 'https://randomuser.me/api/portraits/men/4.jpg',
+                name: 'Omar Raza',
+                role: 'CEO',
+            },
+            {
+                text:
+                    'Fitur blog AI dan arahan SEO sangat membantu tim kami menjaga konten tetap aktif tanpa menambah banyak pekerjaan manual.',
+                image: 'https://randomuser.me/api/portraits/women/5.jpg',
+                name: 'Zainab Hussain',
+                role: 'Project Manager',
+            },
+            {
+                text:
+                    'Implementasinya cepat dan komunikasinya jelas. Website bisa dipakai tim kami tanpa training yang rumit.',
+                image: 'https://randomuser.me/api/portraits/women/6.jpg',
+                name: 'Aliza Khan',
+                role: 'Business Analyst',
+            },
+            {
+                text:
+                    'Setelah website dirapikan, brand kami terlihat lebih kredibel saat dibagikan ke calon partner dan pelanggan.',
+                image: 'https://randomuser.me/api/portraits/men/7.jpg',
+                name: 'Farhan Siddiqui',
+                role: 'Marketing Director',
+            },
+            {
+                text:
+                    'Tim Velno tidak hanya mengerjakan desain, tapi juga membantu menyusun prioritas fitur yang benar-benar kami butuhkan.',
+                image: 'https://randomuser.me/api/portraits/women/8.jpg',
+                name: 'Sana Sheikh',
+                role: 'Sales Manager',
+            },
+            {
+                text:
+                    'Performa website meningkat dan alur kontak pelanggan jadi lebih jelas. Hasilnya terasa di jumlah pertanyaan masuk.',
+                image: 'https://randomuser.me/api/portraits/men/9.jpg',
+                name: 'Hassan Ali',
+                role: 'E-commerce Manager',
             },
         ],
     },

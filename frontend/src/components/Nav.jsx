@@ -48,13 +48,13 @@ function Nav() {
 
     return (
         <div className={`nav-sticky ${scrolled ? 'nav-sticky--scrolled' : ''}`}>
-            <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-6 py-5 md:flex-nowrap">
-                <div className="flex items-center gap-3 text-lg font-semibold text-[#151323]">
+            <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6 md:flex-nowrap md:gap-4 md:py-5">
+                <div className="min-w-0 flex flex-1 items-center gap-3 text-base font-semibold text-[#151323] md:flex-none md:text-lg">
                     {logoImage ? (
                         <img
                             src={logoImage}
                             alt={logoText || 'Logo'}
-                            className="h-14 w-auto max-w-[260px] object-contain sm:h-16 sm:max-w-[320px] md:h-20 md:max-w-[420px]"
+                            className="h-11 w-auto max-w-[180px] object-contain sm:h-16 sm:max-w-[320px] md:h-20 md:max-w-[420px]"
                         />
                     ) : (
                         <>
@@ -63,7 +63,7 @@ function Nav() {
                             >
                                 {logoInitials}
                             </span>
-                            {logoText ? <span>{logoText}</span> : null}
+                            {logoText ? <span className="min-w-0 truncate">{logoText}</span> : null}
                         </>
                     )}
                 </div>

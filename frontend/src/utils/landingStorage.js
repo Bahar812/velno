@@ -27,7 +27,29 @@ const mergeDeep = (base, override) => {
     return result;
 };
 
-export const mergeLandingContent = (override) => mergeDeep(defaultLandingContent, override);
+const requiredServiceTitles = defaultLandingContent.services.items.map((item) => item.title);
+
+const hasRequiredServices = (items) =>
+    Array.isArray(items) &&
+    items.length === requiredServiceTitles.length &&
+    requiredServiceTitles.every((title, index) => items[index]?.title === title);
+
+const normalizeLandingContent = (content) => {
+    if (hasRequiredServices(content?.services?.items)) {
+        return content;
+    }
+
+    return {
+        ...content,
+        services: {
+            ...content.services,
+            items: defaultLandingContent.services.items,
+        },
+    };
+};
+
+export const mergeLandingContent = (override) =>
+    normalizeLandingContent(mergeDeep(defaultLandingContent, override));
 
 export const loadLandingContent = () => {
     if (typeof window === 'undefined') {
