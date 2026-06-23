@@ -27,6 +27,9 @@ export const englishLandingContent = {
             },
         ],
     },
+    marquee: {
+        ariaLabel: 'Velno project visual previews',
+    },
     about: {
         badge: 'About Us',
         sentence:
@@ -106,9 +109,9 @@ export const englishLandingContent = {
                     'Server, cloud, deployment, monitoring, backup, and security planning so your digital system runs reliably.',
             },
             {
-                title: 'System Integration',
+                title: 'AI Automation',
                 detail:
-                    'API, payment, CRM, ERP, WhatsApp, and internal system integration so your data and workflows stay connected.',
+                    'AI-powered automation for chatbots, customer follow-up, data analysis, content workflows, and repetitive business processes.',
             },
             {
                 title: 'IT Support & Maintenance',
@@ -172,7 +175,7 @@ export const englishLandingContent = {
     },
     portfolio: {
         badge: 'Portfolio',
-        title: 'Showcasing your best work with precision.',
+        title: 'Showcasing our latest work with precision.',
         description:
             'We deliver quality websites and digital products that combine UI craft, performance, and measurable growth.',
         buttonLabel: 'View More Portfolio',

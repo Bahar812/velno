@@ -1,3 +1,90 @@
+const defaultMarqueeItems = [
+    {
+        image: 'https://motionsites.ai/assets/hero-space-voyage-preview-eECLH3Yc.gif',
+        alt: 'Preview desain Space Voyage',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-codenest-preview-Cgppc2qV.gif',
+        alt: 'Preview desain Codenest',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-vex-ventures-preview-BczMFIiw.gif',
+        alt: 'Preview desain Vex Ventures',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-stellar-ai-v2-preview-DjvxjG3C.gif',
+        alt: 'Preview desain Stellar AI',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-asme-preview-B_nGDnTP.gif',
+        alt: 'Preview desain Asme',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-transform-data-preview-Cx5OU29N.gif',
+        alt: 'Preview desain Transform Data',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-vitara-preview-Cjz2QYyU.gif',
+        alt: 'Preview desain Vitara',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-terra-preview-BFjrCr7T.gif',
+        alt: 'Preview desain Terra',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-skyelite-preview-DHaZIgUv.gif',
+        alt: 'Preview desain Skyelite',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-aethera-preview-DknSlcTa.gif',
+        alt: 'Preview desain Aethera',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-designpro-preview-D8c5_een.gif',
+        alt: 'Preview desain Designpro',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-stellar-ai-preview-D3HL6bw1.gif',
+        alt: 'Preview desain Stellar AI',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-xportfolio-preview-D4A8maiC.gif',
+        alt: 'Preview desain X Portfolio',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-orbit-web3-preview-BXt4OttD.gif',
+        alt: 'Preview desain Orbit Web3',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-nexora-preview-cx5HmUgo.gif',
+        alt: 'Preview desain Nexora',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-evr-ventures-preview-DZxeVFEX.gif',
+        alt: 'Preview desain EVR Ventures',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-planet-orbit-preview-DWAP8Z1P.gif',
+        alt: 'Preview desain Planet Orbit',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-new-era-preview-CocuDUm9.gif',
+        alt: 'Preview desain New Era',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-wealth-preview-B70idl_u.gif',
+        alt: 'Preview desain Wealth',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-luminex-preview-CxOP7ce6.gif',
+        alt: 'Preview desain Luminex',
+    },
+    {
+        image: 'https://motionsites.ai/assets/hero-celestia-preview-0yO3jXO8.gif',
+        alt: 'Preview desain Celestia',
+    },
+];
+
 export const defaultLandingContent = {
     brand: {
         logoText: 'Velno Softwarehouse',
@@ -36,6 +123,10 @@ export const defaultLandingContent = {
             'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=900&auto=format&fit=crop',
             'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=900&auto=format&fit=crop',
         ],
+    },
+    marquee: {
+        ariaLabel: 'Preview visual proyek Velno',
+        items: defaultMarqueeItems,
     },
     about: {
         badge: 'About Us',
@@ -145,12 +236,12 @@ export const defaultLandingContent = {
                 icon: 'Server',
             },
             {
-                title: 'System Integration',
+                title: 'AI Automation',
                 detail:
-                    'Integrasi API, pembayaran, CRM, ERP, WhatsApp, dan sistem internal agar data serta proses bisnis saling terhubung.',
-                type: 'integration',
+                    'Otomatisasi proses bisnis dengan AI untuk chatbot, follow-up pelanggan, analisis data, pembuatan konten, dan alur kerja yang lebih efisien.',
+                type: 'ai-automation',
                 image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
-                icon: 'Cable',
+                icon: 'Sparkles',
             },
             {
                 title: 'IT Support & Maintenance',
@@ -222,7 +313,7 @@ export const defaultLandingContent = {
     },
     portfolio: {
         badge: 'Portofolio',
-        title: 'Menampilkan karya terbaik Anda dengan presisi.',
+        title: 'Menampilkan karya terakhir kami dengan presisi.',
         description:
             'Tim kami menghadirkan website dan produk digital berkualitas yang memadukan kualitas UI, performa, dan pertumbuhan terukur.',
         buttonLabel: 'Lihat Portofolio Lainnya',

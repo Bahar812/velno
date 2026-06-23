@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
     ArrowUpRight,
     BarChart3,
     Cable,
     CheckCircle2,
-    ChevronLeft,
-    ChevronRight,
     Code2,
     Globe2,
-    GripVertical,
     MessageCircle,
-    PlugZap,
     Server,
     ShieldCheck,
     Sliders,
@@ -28,7 +24,6 @@ import { useUi } from '../context/UiContext';
 import { useLocalizedLandingContent } from '../utils/useLocalizedLandingContent';
 
 const iconMap = {
-    PlugZap,
     ShieldCheck,
     Sparkles,
     BarChart3,
@@ -41,27 +36,74 @@ const iconMap = {
     Wrench,
 };
 
-const wrapIndex = (length, value) => ((value % length) + length) % length;
-
 const normalizeWhatsappNumber = (value) => `${value ?? ''}`.replace(/\D/g, '');
 const buildWhatsappLink = (value) => {
     const normalized = normalizeWhatsappNumber(value);
     return normalized ? `https://wa.me/${normalized}` : '';
 };
+const formatProjectNumber = (index) => String(index + 1).padStart(2, '0');
+const getProjectImages = (images = []) => {
+    const validImages = images.filter(Boolean);
+    const fallback =
+        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop';
+
+    return [
+        validImages[0] ?? fallback,
+        validImages[1] ?? validImages[0] ?? fallback,
+        validImages[2] ?? validImages[1] ?? validImages[0] ?? fallback,
+    ];
+};
+const repeatMarqueeItems = (items) => [...items, ...items, ...items];
+
+const instagramUrl = 'https://www.instagram.com/velno_tech/';
+const instagramPosts = [
+    {
+        variant: 'instagram-post--website',
+        postUrl: 'https://www.instagram.com/p/DZXZPb1pv_i/',
+        imageUrl: '/instagram/velno-post-1.jpg',
+        title: 'Bawa bisnis kamu naik level dengan sistem digital',
+    },
+    {
+        variant: 'instagram-post--tips',
+        postUrl: 'https://www.instagram.com/p/DZXWb4mp0rs/',
+        imageUrl: '/instagram/velno-post-2.jpg',
+        title: 'Maksimalkan digital marketing untuk UMKM',
+    },
+    {
+        variant: 'instagram-post--case',
+        postUrl: 'https://www.instagram.com/p/DZXWHLipfnP/',
+        imageUrl: '/instagram/velno-post-3.jpg',
+        title: 'UMKM terkendala sistem manual',
+    },
+    {
+        variant: 'instagram-post--system',
+        postUrl: 'https://www.instagram.com/p/DZXnb2gppbo/',
+        imageUrl: '/instagram/velno-post-4.jpg',
+        title: 'Biarkan website bekerja 24/7',
+    },
+    {
+        variant: 'instagram-post--brand',
+        postUrl: 'https://www.instagram.com/p/DZXnwRlJVNv/',
+        imageUrl: '/instagram/velno-post-5.jpg',
+        title: 'Bisnis serius mulai dari digital',
+    },
+    {
+        variant: 'instagram-post--support',
+        postUrl: 'https://www.instagram.com/p/DZXn-KPpZWU/',
+        imageUrl: '/instagram/velno-post-6.jpg',
+        title: 'Punya bisnis saatnya go digital',
+    },
+];
 
 function Home() {
     const { language } = useUi();
-    const [whyComparisonInset, setWhyComparisonInset] = useState(52);
-    const [isWhyComparisonDragging, setIsWhyComparisonDragging] = useState(false);
-    const [activeServiceIndex, setActiveServiceIndex] = useState(0);
-    const serviceWheelLockRef = useRef(0);
-    const serviceSwipeRef = useRef(null);
-    const serviceClickBlockRef = useRef(0);
+    const marqueeSectionRef = useRef(null);
+    const marqueeRowOneRef = useRef(null);
+    const marqueeRowTwoRef = useRef(null);
     const content = useLocalizedLandingContent();
     const {
         hero,
         about,
-        whyWebsite,
         vsWebsite,
         services,
         solutions,
@@ -70,6 +112,7 @@ function Home() {
         pricing: pricingContent,
         testimonials,
         contact,
+        marquee,
     } = content;
     const heroImages = hero?.collageImages?.filter(Boolean) ?? [];
     const heroPreviewImage =
@@ -77,18 +120,14 @@ function Home() {
         'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1400&auto=format&fit=crop';
     const heroSecondaryImage = heroImages[1] ?? heroPreviewImage;
     const heroTertiaryImage = heroImages[2] ?? heroPreviewImage;
-    const whyBeforeImage =
-        whyWebsite?.beforeImage ??
-        'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop';
-    const whyAfterImage =
-        whyWebsite?.afterImage ??
-        'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1400&auto=format&fit=crop';
     const heroStats = hero?.floats ?? [];
     const serviceItems = services?.items?.filter(Boolean) ?? [];
-    const activeService = serviceItems.length
-        ? serviceItems[wrapIndex(serviceItems.length, activeServiceIndex)]
-        : null;
     const testimonialItems = testimonials?.items?.filter(Boolean) ?? [];
+    const marqueeItems = marquee?.items?.filter((item) => item?.image) ?? [];
+    const marqueeSplitIndex = Math.max(1, Math.ceil(marqueeItems.length / 2));
+    const firstMarqueeItems = marqueeItems.slice(0, marqueeSplitIndex);
+    const secondMarqueeItems = marqueeItems.slice(marqueeSplitIndex);
+    const bottomMarqueeItems = secondMarqueeItems.length ? secondMarqueeItems : firstMarqueeItems;
     const firstTestimonialsColumn = testimonialItems.slice(0, 3);
     const secondTestimonialsColumn = testimonialItems.slice(3, 6);
     const thirdTestimonialsColumn = testimonialItems.slice(6, 9);
@@ -106,6 +145,12 @@ function Home() {
                 profileLabels: ['Website', 'Branding', 'SEO', 'Sistem'],
                 serviceCount: 'Layanan',
                 serviceAction: 'Explore',
+                instagramEyebrow: 'Instagram',
+                instagramTitle: 'Temukan kami juga di Instagram',
+                instagramDescription:
+                    'Ikuti update layanan Velno Tech, tips website, portfolio terbaru, dan insight digital yang bisa bantu bisnis tampil lebih profesional.',
+                instagramButton: 'Follow @velno_tech',
+                instagramAria: 'Kunjungi Instagram Velno Tech',
             }
             : {
                 happyClients: 'Happy Clients',
@@ -119,6 +164,12 @@ function Home() {
                 profileLabels: ['Website', 'Branding', 'SEO', 'Systems'],
                 serviceCount: 'Services',
                 serviceAction: 'Explore',
+                instagramEyebrow: 'Instagram',
+                instagramTitle: 'Find fresh posts and updates on our Instagram',
+                instagramDescription:
+                    'Follow Velno Tech for service updates, website tips, new portfolio work, and digital insights for a stronger online presence.',
+                instagramButton: 'Follow @velno_tech',
+                instagramAria: 'Visit Velno Tech Instagram',
             };
     const agentDesktopLink = buildWhatsappLink(vsWebsite?.agentDesktopNumber);
     const agentMobileLink = buildWhatsappLink(vsWebsite?.agentMobileNumber);
@@ -135,90 +186,6 @@ function Home() {
         vsGalleryImages[3] ??
             'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop',
     ];
-    const handleServiceWheel = (event) => {
-        if (serviceItems.length < 2) {
-            return;
-        }
-
-        const wheelDelta =
-            Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
-
-        if (Math.abs(wheelDelta) < 12) {
-            return;
-        }
-
-        const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
-        if (now - serviceWheelLockRef.current < 260) {
-            return;
-        }
-
-        serviceWheelLockRef.current = now;
-        setActiveServiceIndex((value) => value + (wheelDelta > 0 ? 1 : -1));
-    };
-    const handleServiceSwipeStart = (event) => {
-        if (serviceItems.length < 2 || event.pointerType === 'mouse') {
-            return;
-        }
-
-        serviceSwipeRef.current = {
-            pointerId: event.pointerId,
-            x: event.clientX,
-            y: event.clientY,
-        };
-        event.currentTarget.setPointerCapture?.(event.pointerId);
-    };
-    const handleServiceSwipeEnd = (event) => {
-        const swipeStart = serviceSwipeRef.current;
-        if (!swipeStart || swipeStart.pointerId !== event.pointerId) {
-            return;
-        }
-
-        const deltaX = event.clientX - swipeStart.x;
-        const deltaY = event.clientY - swipeStart.y;
-        const isHorizontalSwipe = Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15;
-
-        serviceSwipeRef.current = null;
-        if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
-            event.currentTarget.releasePointerCapture?.(event.pointerId);
-        }
-
-        if (!isHorizontalSwipe) {
-            return;
-        }
-
-        serviceClickBlockRef.current = Date.now() + 260;
-        setActiveServiceIndex((value) => value + (deltaX < 0 ? 1 : -1));
-    };
-    const handleServiceSwipeCancel = (event) => {
-        serviceSwipeRef.current = null;
-        if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
-            event.currentTarget.releasePointerCapture?.(event.pointerId);
-        }
-    };
-    const handleServiceCardClick = (index) => {
-        if (Date.now() < serviceClickBlockRef.current) {
-            return;
-        }
-        setActiveServiceIndex(index);
-    };
-    const updateWhyComparisonInset = (event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        const next = ((event.clientX - rect.left) / rect.width) * 100;
-        setWhyComparisonInset(Math.min(100, Math.max(0, next)));
-    };
-    const startWhyComparisonDrag = (event) => {
-        setIsWhyComparisonDragging(true);
-        updateWhyComparisonInset(event);
-        event.currentTarget.setPointerCapture?.(event.pointerId);
-    };
-    const moveWhyComparisonDrag = (event) => {
-        if (!isWhyComparisonDragging) return;
-        updateWhyComparisonInset(event);
-    };
-    const stopWhyComparisonDrag = (event) => {
-        setIsWhyComparisonDragging(false);
-        event.currentTarget.releasePointerCapture?.(event.pointerId);
-    };
     useEffect(() => {
         gsap.registerPlugin(ScrollTrigger);
         gsap.utils.toArray('.reveal').forEach((node) => {
@@ -368,6 +335,82 @@ function Home() {
 
     }, []);
 
+    useEffect(() => {
+        const section = marqueeSectionRef.current;
+        const rowOne = marqueeRowOneRef.current;
+        const rowTwo = marqueeRowTwoRef.current;
+
+        if (!section || !rowOne || !rowTwo) {
+            return undefined;
+        }
+
+        let frameId = 0;
+        const updateRows = () => {
+            frameId = 0;
+            const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+            const offset = (window.scrollY - sectionTop + window.innerHeight) * 0.3;
+            const translate = offset - 200;
+
+            rowOne.style.transform = `translate3d(${translate}px, 0, 0)`;
+            rowTwo.style.transform = `translate3d(${-translate}px, 0, 0)`;
+        };
+        const requestUpdate = () => {
+            if (frameId) {
+                return;
+            }
+            frameId = window.requestAnimationFrame(updateRows);
+        };
+
+        updateRows();
+        window.addEventListener('scroll', requestUpdate, { passive: true });
+        window.addEventListener('resize', requestUpdate);
+
+        return () => {
+            window.removeEventListener('scroll', requestUpdate);
+            window.removeEventListener('resize', requestUpdate);
+            if (frameId) {
+                window.cancelAnimationFrame(frameId);
+            }
+        };
+    }, [marqueeItems.length]);
+
+    useEffect(() => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        const tweens = gsap.utils
+            .toArray('.velno-project-card-frame')
+            .map((frame) => {
+                const card = frame.querySelector('.velno-project-card');
+                const targetScale = Number(card?.dataset.projectTargetScale) || 1;
+
+                if (!card || targetScale >= 1) {
+                    return null;
+                }
+
+                return gsap.to(card, {
+                    scale: targetScale,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: frame,
+                        start: 'top top+=96',
+                        end: 'bottom top+=96',
+                        scrub: true,
+                        invalidateOnRefresh: true,
+                    },
+                });
+            })
+            .filter(Boolean);
+
+        ScrollTrigger.refresh();
+
+        return () => {
+            tweens.forEach((tween) => {
+                tween.scrollTrigger?.kill();
+                tween.kill();
+            });
+        };
+    }, [portfolio.projects.length]);
+
     return (
         <div>
             <header id="home" className="home-aurora-hero -mt-20 pt-20">
@@ -443,139 +486,52 @@ function Home() {
                 </ContainerScroll>
             </header>
 
+            {marqueeItems.length ? (
+                <section
+                    ref={marqueeSectionRef}
+                    className="velno-marquee-section"
+                    aria-label={marquee?.ariaLabel ?? 'Preview visual proyek Velno'}
+                >
+                    <div className="velno-marquee-row" ref={marqueeRowOneRef}>
+                        {repeatMarqueeItems(firstMarqueeItems).map((item, index) => (
+                            <img
+                                key={`marquee-top-${item.image}-${index}`}
+                                className="velno-marquee-tile"
+                                src={item.image}
+                                alt={item.alt ?? ''}
+                                loading="lazy"
+                            />
+                        ))}
+                    </div>
+                    <div className="velno-marquee-row" ref={marqueeRowTwoRef}>
+                        {repeatMarqueeItems(bottomMarqueeItems).map((item, index) => (
+                            <img
+                                key={`marquee-bottom-${item.image}-${index}`}
+                                className="velno-marquee-tile"
+                                src={item.image}
+                                alt={item.alt ?? ''}
+                                loading="lazy"
+                            />
+                        ))}
+                    </div>
+                </section>
+            ) : null}
+
             <section id="about" className="section-white py-20 gsap-zoom-in">
                 <div className="mx-auto max-w-5xl px-6 text-center">
                     <span className="badge">{about.badge}</span>
                     <p className="intro-words mt-6 text-2xl font-semibold leading-snug md:text-4xl">
-                        {about.sentence.split(' ').map((word, index) => (
-                            <span key={`${word}-${index}`}>{word}</span>
+                        {about.sentence.split(' ').map((word, index, words) => (
+                            <span key={`${word}-${index}`}>
+                                {word}
+                                {index < words.length - 1 ? ' ' : ''}
+                            </span>
                         ))}
                     </p>
                     <div className="mt-8">
                         <a className="btn-primary" href="#contact">
                             {about.buttonLabel}
                         </a>
-                    </div>
-                </div>
-            </section>
-
-            <section id="why-website" className="why-website-section py-24 gsap-zoom-in">
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="why-website-heading reveal">
-                        <span className="badge">{whyWebsite.badge}</span>
-                        <h2 className="font-display">
-                            {whyWebsite.title}
-                        </h2>
-                        <p>
-                            {whyWebsite.description}
-                        </p>
-                    </div>
-                    <div className="why-comparison-grid">
-                        <div className="why-education-list reveal">
-                            {whyWebsite.cards.map((item, index) => (
-                                <article key={item.title} className="why-lesson-card">
-                                    <span className="why-lesson-index">
-                                        {String(index + 1).padStart(2, '0')}
-                                    </span>
-                                    <div>
-                                        <strong>{item.stat}</strong>
-                                        <h3>{item.title}</h3>
-                                        <p>{item.detail}</p>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
-                        <div
-                            className="why-comparison-frame reveal"
-                            style={{ '--why-inset': `${whyComparisonInset}%` }}
-                            onPointerDown={startWhyComparisonDrag}
-                            onPointerMove={moveWhyComparisonDrag}
-                            onPointerUp={stopWhyComparisonDrag}
-                            onPointerCancel={stopWhyComparisonDrag}
-                            onPointerLeave={() => setIsWhyComparisonDragging(false)}
-                            role="presentation"
-                        >
-                            <div className="why-comparison-panel why-comparison-panel--before">
-                                <div className="why-browser">
-                                    <div className="why-browser-top">
-                                        <span />
-                                        <span />
-                                        <span />
-                                    </div>
-                                    <div className="why-person-visual why-person-visual--sad">
-                                        <img
-                                            src={whyBeforeImage}
-                                            alt="Ilustrasi bisnis tanpa website terlihat kurang siap online"
-                                            draggable="false"
-                                        />
-                                    </div>
-                                    <div className="why-before-content">
-                                        <div className="why-copy-stack">
-                                            <span className="why-status-pill why-status-pill--muted">
-                                                Tanpa Website
-                                            </span>
-                                            <h3>Calon pelanggan ragu sebelum bertanya.</h3>
-                                            <p>
-                                                Informasi tersebar di chat dan media sosial, sulit ditemukan di Google,
-                                                dan kepercayaan harus dibangun dari nol setiap kali ada calon klien baru.
-                                            </p>
-                                            <div className="why-friction-list">
-                                                <span>Tidak muncul saat dicari</span>
-                                                <span>Portofolio sulit dibuktikan</span>
-                                                <span>Tim menjawab pertanyaan berulang</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="why-comparison-panel why-comparison-panel--after">
-                                <div className="why-browser why-browser--after">
-                                    <div className="why-browser-top">
-                                        <span />
-                                        <span />
-                                        <span />
-                                    </div>
-                                    <div className="why-person-visual why-person-visual--happy">
-                                        <img
-                                            src={whyAfterImage}
-                                            alt="Ilustrasi bisnis dengan website dan dashboard digital"
-                                            draggable="false"
-                                        />
-                                    </div>
-                                    <div className="why-after-content">
-                                        <div className="why-copy-stack">
-                                            <span className="why-status-pill">
-                                                Dengan Website
-                                            </span>
-                                            <h3>Bisnis terlihat siap, jelas, dan mudah dipercaya.</h3>
-                                            <p>
-                                                Website menjadi pusat informasi 24/7: layanan, bukti kerja, testimoni,
-                                                dan CTA tertata sehingga calon klien paham alasan harus menghubungi Anda.
-                                            </p>
-                                            <div className="why-signal-grid">
-                                                <div>
-                                                    <strong>24/7</strong>
-                                                    <span>akses informasi</span>
-                                                </div>
-                                                <div>
-                                                    <strong>SEO</strong>
-                                                    <span>ditemukan Google</span>
-                                                </div>
-                                                <div>
-                                                    <strong>CTA</strong>
-                                                    <span>arah kontak jelas</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="why-comparison-divider">
-                                <button type="button" aria-label="Geser perbandingan website">
-                                    <GripVertical size={18} strokeWidth={2.4} />
-                                </button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -661,103 +617,30 @@ function Home() {
                 </div>
             </section>
 
-            <section id="services" className="services-focus-section py-24 gsap-zoom-in">
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="reveal services-focus-heading">
-                        <span className="services-focus-kicker">{services.badge}</span>
-                        <h2 className="services-focus-title font-display">
-                            {services.title}
-                        </h2>
+            <section id="services" className="velno-services-section">
+                <div className="velno-services-inner">
+                    <div className="velno-services-heading reveal">
+                        <span className="velno-services-kicker">{services.badge}</span>
+                        <h2>Services</h2>
                         <p>{services.description}</p>
                     </div>
 
                     {serviceItems.length ? (
-                        <div
-                            className="services-focus-shell reveal"
-                            onWheel={handleServiceWheel}
-                            onPointerDown={handleServiceSwipeStart}
-                            onPointerUp={handleServiceSwipeEnd}
-                            onPointerCancel={handleServiceSwipeCancel}
-                        >
-                            <div className="services-focus-ambience" aria-hidden="true">
-                                <img src={activeService?.image} alt="" />
-                            </div>
-                            <div className="services-focus-rail" aria-label={services.title}>
-                                {serviceItems.map((item, index) => {
-                                    const normalizedActive = wrapIndex(
-                                        serviceItems.length,
-                                        activeServiceIndex
-                                    );
-                                    let offset = index - normalizedActive;
-                                    if (offset > serviceItems.length / 2) {
-                                        offset -= serviceItems.length;
-                                    }
-                                    if (offset < -serviceItems.length / 2) {
-                                        offset += serviceItems.length;
-                                    }
-                                    const isActive = offset === 0;
-                                    const clampedOffset = Math.max(-3, Math.min(3, offset));
-                                    const offsetClass =
-                                        clampedOffset < 0
-                                            ? `offset-neg-${Math.abs(clampedOffset)}`
-                                            : `offset-${clampedOffset}`;
-                                    const ServiceIcon = iconMap[item.icon] ?? PlugZap;
-
-                                    return (
-                                        <button
-                                            key={item.title}
-                                            className={`services-focus-card ${offsetClass} ${
-                                                isActive ? 'is-active' : ''
-                                            }`}
-                                            type="button"
-                                            onClick={() => handleServiceCardClick(index)}
-                                            aria-label={item.title}
-                                        >
-                                            <img src={item.image} alt="" draggable="false" />
-                                            <span className="services-focus-card-shade" />
-                                            <span className="services-focus-card-icon">
-                                                <ServiceIcon size={18} strokeWidth={2.3} />
-                                            </span>
-                                            <span className="services-focus-card-title">
-                                                {item.title}
-                                            </span>
-                                        </button>
-                                    );
-                                })}
-                            </div>
-
-                            <div className="services-focus-info">
-                                <div className="services-focus-copy">
-                                    <span>
-                                        {wrapIndex(serviceItems.length, activeServiceIndex) + 1} /{' '}
-                                        {serviceItems.length} {homeText.serviceCount}
+                        <div className="velno-services-list" aria-label={services.title}>
+                            {serviceItems.map((item, index) => (
+                                <article
+                                    key={item.title}
+                                    className="velno-service-item reveal"
+                                >
+                                    <span className="velno-service-number">
+                                        {formatProjectNumber(index)}
                                     </span>
-                                    <h3>{activeService?.title}</h3>
-                                    <p>{activeService?.detail}</p>
-                                </div>
-                                <div className="services-focus-actions">
-                                    <div className="services-focus-controls">
-                                        <button
-                                            type="button"
-                                            onClick={() => setActiveServiceIndex((value) => value - 1)}
-                                            aria-label="Layanan sebelumnya"
-                                        >
-                                            <ChevronLeft size={20} strokeWidth={2.4} />
-                                        </button>
-                                        <button
-                                            type="button"
-                                            onClick={() => setActiveServiceIndex((value) => value + 1)}
-                                            aria-label="Layanan berikutnya"
-                                        >
-                                            <ChevronRight size={20} strokeWidth={2.4} />
-                                        </button>
+                                    <div className="velno-service-copy">
+                                        <h3>{item.title}</h3>
+                                        <p>{item.detail}</p>
                                     </div>
-                                    <a className="services-focus-action" href="#contact">
-                                        {homeText.serviceAction}
-                                        <ArrowUpRight size={16} strokeWidth={2.5} />
-                                    </a>
-                                </div>
-                            </div>
+                                </article>
+                            ))}
                         </div>
                     ) : null}
                 </div>
@@ -821,68 +704,93 @@ function Home() {
 
             <HowWeWork content={howWeWork} />
 
-            <section id="portfolio" className="py-24 gsap-zoom-in">
-                <div className="mx-auto max-w-6xl px-6">
-                    <div className="reveal flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-                        <div>
-                            <span className="badge">{portfolio.badge}</span>
-                            <h2 className="font-display mt-4 text-3xl font-semibold md:text-4xl">
-                                {portfolio.title}
-                            </h2>
-                            <p className="mt-4 max-w-2xl text-white/70">
-                                {portfolio.description}
-                            </p>
+            <section id="portfolio" className="velno-projects-section">
+                <div className="velno-projects-inner">
+                    <div className="velno-projects-heading reveal">
+                        <span className="velno-projects-eyebrow">{portfolio.badge}</span>
+                        <h2 className="velno-projects-title">Project</h2>
+                        <div className="velno-projects-copy">
+                            <p className="velno-projects-lead">{portfolio.title}</p>
+                            <p>{portfolio.description}</p>
                         </div>
                     </div>
-                    <div className="mt-12 grid gap-8">
-                        {portfolio.projects.map((project) => (
-                            <div key={project.name} className="grid gap-6 md:grid-cols-[1.1fr_1.9fr]">
-                                <div className="order-2 panel reveal flex flex-col gap-5 md:order-1">
-                                    <div className="text-xs uppercase tracking-[0.3em] text-white/50">
-                                        {project.name}
-                                    </div>
-                                    <div className="space-y-3 text-sm text-white/70">
-                                        {project.bullets.filter(Boolean).map((item) => (
-                                            <div key={item} className="flex items-center gap-3">
-                                                <span className="h-2 w-2 rounded-full bg-violet-400" />
-                                                <span>{item}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <a
-                                        className="portfolio-link"
-                                        href={project.link}
-                                        target="_blank"
-                                        rel="noreferrer"
+
+                    <div className="velno-projects-stack">
+                        {portfolio.projects.map((project, index) => {
+                            const projectImages = getProjectImages(project.images);
+                            const tags = project.tags?.filter(Boolean) ?? [];
+                            const bullets = project.bullets?.filter(Boolean) ?? [];
+                            const category = tags[0] ?? portfolio.badge;
+                            const totalCards = portfolio.projects.length;
+                            const targetScale = 1 - (totalCards - 1 - index) * 0.03;
+
+                            return (
+                                <div
+                                    key={project.name}
+                                    className="velno-project-card-frame"
+                                    style={{
+                                        '--project-offset': `${index * 28}px`,
+                                        '--project-z': index + 1,
+                                    }}
+                                >
+                                    <article
+                                        className="velno-project-card"
+                                        data-project-target-scale={targetScale}
                                     >
-                                        {homeText.visitWebsite}
-                                    </a>
-                                    <div className="mt-4 flex flex-wrap gap-3">
-                                        {project.tags.filter(Boolean).map((tag) => (
-                                            <span
-                                                key={tag}
-                                                className="rounded-full border border-white/15 px-4 py-1 text-xs uppercase tracking-[0.25em] text-white/60"
-                                            >
-                                                {tag}
+                                        <div className="velno-project-card-top">
+                                            <span className="velno-project-number">
+                                                {formatProjectNumber(index)}
                                             </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="order-1 grid gap-4 md:order-2 md:grid-cols-2">
-                                    {project.images.map((image, index) => (
-                                        <div
-                                            key={`${project.name}-${index}`}
-                                            className="panel reveal overflow-hidden"
-                                        >
-                                            <div
-                                                className="h-44 rounded-2xl bg-cover bg-center sm:h-52 md:h-56"
-                                                style={{ backgroundImage: `url(${image})` }}
+                                            <div className="velno-project-card-copy">
+                                                <p className="velno-project-category">{category}</p>
+                                                <h3>{project.name}</h3>
+                                                {bullets.length ? (
+                                                    <div className="velno-project-bullets">
+                                                        {bullets.slice(0, 4).map((item) => (
+                                                            <span key={item}>{item}</span>
+                                                        ))}
+                                                    </div>
+                                                ) : null}
+                                            </div>
+                                            {project.link ? (
+                                                <a
+                                                    className="velno-project-live"
+                                                    href={project.link}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <span>{homeText.visitWebsite}</span>
+                                                    <ArrowUpRight size={16} strokeWidth={2.4} />
+                                                </a>
+                                            ) : null}
+                                        </div>
+
+                                        <div className="velno-project-media-grid">
+                                            <div className="velno-project-media-column">
+                                                <img
+                                                    className="velno-project-image velno-project-image--short"
+                                                    src={projectImages[0]}
+                                                    alt={`${project.name} preview 1`}
+                                                    loading="lazy"
+                                                />
+                                                <img
+                                                    className="velno-project-image velno-project-image--medium"
+                                                    src={projectImages[1]}
+                                                    alt={`${project.name} preview 2`}
+                                                    loading="lazy"
+                                                />
+                                            </div>
+                                            <img
+                                                className="velno-project-image velno-project-image--tall"
+                                                src={projectImages[2]}
+                                                alt={`${project.name} preview 3`}
+                                                loading="lazy"
                                             />
                                         </div>
-                                    ))}
+                                    </article>
                                 </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             </section>
@@ -1003,6 +911,42 @@ function Home() {
                     </div>
                 </section>
             ) : null}
+
+            <section id="instagram" className="instagram-section py-24">
+                <div className="instagram-layout mx-auto max-w-6xl px-6">
+                    <div className="instagram-copy reveal">
+                        <span className="instagram-eyebrow">{homeText.instagramEyebrow}</span>
+                        <h2 className="font-display instagram-title">
+                            {homeText.instagramTitle}
+                        </h2>
+                        <p>{homeText.instagramDescription}</p>
+                        <a
+                            className="instagram-link"
+                            href={instagramUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label={homeText.instagramAria}
+                        >
+                            <span>{homeText.instagramButton}</span>
+                            <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                        </a>
+                    </div>
+                    <div className="instagram-mosaic reveal" aria-label="Preview Instagram Velno Tech">
+                        {instagramPosts.map((post) => (
+                            <a
+                                key={post.variant}
+                                className={`instagram-post ${post.variant}`}
+                                href={post.postUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                style={{ backgroundImage: `url(${post.imageUrl})` }}
+                                aria-label={`${homeText.instagramButton}: ${post.title}`}
+                            >
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             <section id="contact" className="py-24">
                 <div className="mx-auto max-w-6xl px-6">

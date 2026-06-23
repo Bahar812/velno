@@ -210,6 +210,7 @@ function Dashboard() {
     const sections = [
         { id: 'brand', label: 'Merek' },
         { id: 'hero', label: 'Hero' },
+        { id: 'marquee', label: 'Marquee Hero' },
         { id: 'about', label: 'Tentang' },
         { id: 'why', label: 'Kenapa Website' },
         { id: 'vs', label: 'Perbandingan Website' },
@@ -558,6 +559,66 @@ function Dashboard() {
                                     value={image}
                                     onChange={(value) =>
                                         updateByPath(['hero', 'collageImages', index], value)
+                                    }
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+                    ) : null}
+
+                    {activeSection === 'marquee' ? (
+                <section id="dashboard-marquee" className="dashboard-card">
+                    <h2 className="dashboard-section-title">Marquee Hero</h2>
+                    <div className="dashboard-grid">
+                        <Field
+                            label="Label Section"
+                            value={formData.marquee.ariaLabel}
+                            onChange={(value) => updateByPath(['marquee', 'ariaLabel'], value)}
+                        />
+                    </div>
+                    <div className="dashboard-list">
+                        <div className="dashboard-list-header">
+                            <h3>Gambar / GIF Marquee</h3>
+                            <button
+                                className="dashboard-btn dashboard-btn--ghost"
+                                type="button"
+                                onClick={() =>
+                                    addArrayItem(['marquee', 'items'], {
+                                        image: '',
+                                        alt: 'Preview proyek Velno',
+                                    })
+                                }
+                            >
+                                Tambah Item
+                            </button>
+                        </div>
+                        {formData.marquee.items.map((item, index) => (
+                            <div key={`marquee-item-${index}`} className="dashboard-item">
+                                <div className="dashboard-item-header">
+                                    <span>Item {index + 1}</span>
+                                    <button
+                                        className="dashboard-btn dashboard-btn--danger"
+                                        type="button"
+                                        onClick={() => removeArrayItem(['marquee', 'items'], index)}
+                                    >
+                                        Hapus
+                                    </button>
+                                </div>
+                                <div className="dashboard-grid">
+                                    <Field
+                                        label="Alt Text"
+                                        value={item.alt}
+                                        onChange={(value) =>
+                                            updateByPath(['marquee', 'items', index, 'alt'], value)
+                                        }
+                                    />
+                                </div>
+                                <ImageField
+                                    label="URL GIF / Upload Gambar"
+                                    value={item.image}
+                                    onChange={(value) =>
+                                        updateByPath(['marquee', 'items', index, 'image'], value)
                                     }
                                 />
                             </div>
